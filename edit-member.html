@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Member</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f4f4f4;
+    }
+    form {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 400px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    button {
+      padding: 0.7rem 1.5rem;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #msg {
+      margin-top: 1rem;
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="editForm">
+    <h2>Edit Member</h2>
+    <label for="name">Member Name</label>
+    <input type="text" id="name" required />
+
+    <label for="email">Email</label>
+    <input type="email" id="email" required />
+
+    <label for="mobile">Mobile Number</label>
+    <input type="tel" id="mobile" required />
+
+    <label for="joiningDate">Joining Date</label>
+    <input type="date" id="joiningDate" required />
+
+    <label for="duration">Duration (months)</label>
+    <select id="duration" required>
+      <option value="1">1 Month</option>
+      <option value="3">3 Months</option>
+      <option value="6">6 Months</option>
+      <option value="12">12 Months</option>
+    </select>
+
+    <button type="submit">Update Member</button>
+    <p id="msg"></p>
+  </form>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCY5-w3jLyC9iXN8Kh26wGIVia1zGuGwyk",
+      authDomain: "gym-management-50b12.firebaseapp.com",
+      projectId: "gym-management-50b12",
+      storageBucket: "gym-management-50b12.appspot.com",
+      messagingSenderId: "202067078338",
+      appId: "1:202067078338:web:6ad435b248f3230d7cdf5b",
+      measurementId: "G-SNPQXVF7VF"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const form = document.getElementById('editForm');
+    const msg = document.getElementById('msg');
+    const params = new URLSearchParams(window.location.search);
+    const memberId = params.get('memberId');
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user || !memberId) {
+        window.location.href = "/index.html";
+        return;
+      }
+
+      const memberRef = doc(db, "gyms", user.uid, "members", memberId);
+      const memberSnap = await getDoc(memberRef);
+
+      if (!memberSnap.exists()) {
+        msg.textContent = "Member not found.";
+        return;
+      }
+
+      const data = memberSnap.data();
+
+      document.getElementById("name").value = data.name || "";
+      document.getElementById("email").value = data.email || "";
+      document.getElementById("mobile").value = data.mobile || "";
+      document.getElementById("joiningDate").value = data.joiningDate || "";
+      document.getElementById("duration").value = data.duration || "";
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        try {
+          await updateDoc(memberRef, {
+            name: document.getElementById("name").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            mobile: document.getElementById("mobile").value.trim(),
+            joiningDate: document.getElementById("joiningDate").value,
+            duration: document.getElementById("duration").value
+          });
+
+          msg.textContent = "Member updated successfully ✅";
+        } catch (error) {
+          msg.textContent = "Error: " + error.message;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
