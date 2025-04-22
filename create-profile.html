@@ -20,28 +20,16 @@
       z-index: 1000;
       box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.2);
     }
-
-    #logoPreview {
-      max-width: 200px;
-      margin-top: 10px;
-      display: none;
-    }
   </style>
 </head>
 <body class="bg-light">
   <div class="container mt-5 mb-5 pb-5">
     <h2 class="mb-4">Create Gym Profile</h2>
-    <form id="profileForm" enctype="multipart/form-data">
+    <form id="profileForm">
       <div class="mb-3">
         <label for="gymName" class="form-label">Gym Name</label>
         <input type="text" class="form-control" id="gymName" required />
       </div>
-
-      <!-- <div class="mb-3">
-        <label for="gymLogo" class="form-label">Gym Logo</label>
-        <input type="file" class="form-control" id="gymLogo" accept="image/*"  />
-        <img id="logoPreview" alt="Gym Logo Preview" />
-      </div> -->
 
       <div class="mb-3">
         <label for="phone" class="form-label">Phone Number</label>
@@ -100,7 +88,6 @@
           <option>Jammu and Kashmir</option>
         </select>
       </div>
-      
 
       <div class="mb-3">
         <label for="website" class="form-label">Website (Optional)</label>
@@ -116,7 +103,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
     import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCY5-w3jLyC9iXN8Kh26wGIVia1zGuGwyk",
@@ -131,24 +117,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
-    const storage = getStorage(app);
-
-    const logoInput = document.getElementById("gymLogo");
-    const logoPreview = document.getElementById("logoPreview");
-
-    // logoInput.addEventListener("change", () => {
-    //   const file = logoInput.files[0];
-    //   if (file) {
-    //     const reader = new FileReader();
-    //     reader.onload = (e) => {
-    //       logoPreview.src = e.target.result;
-    //       logoPreview.style.display = "block";
-    //     };
-    //     reader.readAsDataURL(file);
-    //   } else {
-    //     logoPreview.style.display = "none";
-    //   }
-    // });
 
     onAuthStateChanged(auth, (user) => {
       if (!user) {
@@ -167,21 +135,10 @@
         const city = document.getElementById("city").value.trim();
         const state = document.getElementById("state").value.trim();
         const website = document.getElementById("website") ? document.getElementById("website").value.trim() : "";
-        const gymLogoFile = logoInput.files[0];
 
         try {
-          let logoUrl = "";
-
-          if (gymLogoFile) {
-            const filePath = `gymLogos/${user.uid}/${gymLogoFile.name}`;
-            const storageRef = ref(storage, filePath);
-            await uploadBytes(storageRef, gymLogoFile);
-            logoUrl = await getDownloadURL(storageRef); // ✅ CORS-safe download URL
-          }
-
           await setDoc(doc(db, "gyms", user.uid), {
             gymName,
-            gymLogo: logoUrl,
             phone,
             address,
             city,
