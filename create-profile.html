@@ -37,11 +37,11 @@
         <input type="text" class="form-control" id="gymName" required />
       </div>
 
-      <div class="mb-3">
+      <!-- <div class="mb-3">
         <label for="gymLogo" class="form-label">Gym Logo</label>
-        <input type="file" class="form-control" id="gymLogo" accept="image/*" />
+        <input type="file" class="form-control" id="gymLogo" accept="image/*"  />
         <img id="logoPreview" alt="Gym Logo Preview" />
-      </div>
+      </div> -->
 
       <div class="mb-3">
         <label for="phone" class="form-label">Phone Number</label>
@@ -51,6 +51,60 @@
       <div class="mb-3">
         <label for="address" class="form-label">Address</label>
         <textarea class="form-control" id="address" rows="3" required></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="city" class="form-label">City</label>
+        <input type="text" class="form-control" id="city" required />
+      </div>
+
+      <div class="mb-3">
+        <label for="state" class="form-label">State</label>
+        <select class="form-select" id="state" required>
+          <option value="">Select State</option>
+          <option>Andhra Pradesh</option>
+          <option>Arunachal Pradesh</option>
+          <option>Assam</option>
+          <option>Bihar</option>
+          <option>Chhattisgarh</option>
+          <option>Goa</option>
+          <option>Gujarat</option>
+          <option>Haryana</option>
+          <option>Himachal Pradesh</option>
+          <option>Jharkhand</option>
+          <option>Karnataka</option>
+          <option>Kerala</option>
+          <option>Madhya Pradesh</option>
+          <option>Maharashtra</option>
+          <option>Manipur</option>
+          <option>Meghalaya</option>
+          <option>Mizoram</option>
+          <option>Nagaland</option>
+          <option>Odisha</option>
+          <option>Punjab</option>
+          <option>Rajasthan</option>
+          <option>Sikkim</option>
+          <option>Tamil Nadu</option>
+          <option>Telangana</option>
+          <option>Tripura</option>
+          <option>Uttar Pradesh</option>
+          <option>Uttarakhand</option>
+          <option>West Bengal</option>
+          <option>Andaman and Nicobar Islands</option>
+          <option>Chandigarh</option>
+          <option>Dadra and Nagar Haveli and Daman and Diu</option>
+          <option>Delhi</option>
+          <option>Lakshadweep</option>
+          <option>Puducherry</option>
+          <option>Ladakh</option>
+          <option>Jammu and Kashmir</option>
+        </select>
+      </div>
+      
+
+      <div class="mb-3">
+        <label for="website" class="form-label">Website (Optional)</label>
+        <input type="url" class="form-control" id="website" />
       </div>
 
       <button type="submit" class="btn btn-primary">Create Profile</button>
@@ -110,6 +164,9 @@
         const gymName = document.getElementById("gymName").value.trim();
         const phone = document.getElementById("phone").value.trim();
         const address = document.getElementById("address").value.trim();
+        const city = document.getElementById("city").value.trim();
+        const state = document.getElementById("state").value.trim();
+        const website = document.getElementById("website") ? document.getElementById("website").value.trim() : "";
         const gymLogoFile = logoInput.files[0];
 
         try {
@@ -127,14 +184,15 @@
             gymLogo: logoUrl,
             phone,
             address,
+            city,
+            state,
+            website,
             ownerEmail: user.email,
             createdAt: new Date().toISOString()
           });
 
           alert("Gym profile created successfully!");
-          
           window.location.href = "/gym-dashboard.html";
-
         } catch (error) {
           console.error("Error creating profile:", error);
           alert("An error occurred while creating the profile.");
