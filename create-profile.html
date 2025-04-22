@@ -136,19 +136,19 @@
     const logoInput = document.getElementById("gymLogo");
     const logoPreview = document.getElementById("logoPreview");
 
-    logoInput.addEventListener("change", () => {
-      const file = logoInput.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          logoPreview.src = e.target.result;
-          logoPreview.style.display = "block";
-        };
-        reader.readAsDataURL(file);
-      } else {
-        logoPreview.style.display = "none";
-      }
-    });
+    // logoInput.addEventListener("change", () => {
+    //   const file = logoInput.files[0];
+    //   if (file) {
+    //     const reader = new FileReader();
+    //     reader.onload = (e) => {
+    //       logoPreview.src = e.target.result;
+    //       logoPreview.style.display = "block";
+    //     };
+    //     reader.readAsDataURL(file);
+    //   } else {
+    //     logoPreview.style.display = "none";
+    //   }
+    // });
 
     onAuthStateChanged(auth, (user) => {
       if (!user) {
