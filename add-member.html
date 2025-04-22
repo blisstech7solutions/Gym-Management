@@ -4,72 +4,211 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Add Gym Member</title>
+
+  <!-- Font Awesome (for icons) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
   <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      font-family: 'Arial', sans-serif;
+      height: 100%;
+      background: #f4f7fb;
+      color: #333;
+    }
+
+    /* Flex Layout for Sticky Footer */
     body {
-      font-family: Arial, sans-serif;
-      padding: 2rem;
-      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
-    form {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      max-width: 400px;
-      margin: auto;
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
     }
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-    input, select {
+
+    .form-container {
+      background-color: #ffffff;
+      padding: 2rem 3rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       width: 100%;
-      padding: 0.5rem;
-      margin-bottom: 1rem;
+      max-width: 700px;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
     }
+
+    .form-container:hover {
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 1.8rem;
+      color: #007bff;
+      margin-bottom: 1.5rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    label {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input,
+    select {
+      padding: 1rem;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      width: 100%;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+    }
+
     button {
-      padding: 0.7rem 1.5rem;
+      padding: 1rem;
       background-color: #007bff;
       color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 8px;
+      font-size: 1.1rem;
       cursor: pointer;
-    }
-    #msg {
+      transition: background-color 0.3s ease;
       margin-top: 1rem;
-      color: green;
-      font-weight: bold;
     }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #msg {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+
+    .icon {
+      font-size: 1.2rem;
+      margin-right: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .form-container {
+        padding: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.6rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .form-container {
+        padding: 1rem;
+        margin-top: 1rem;
+      }
+
+      h2 {
+        font-size: 1.4rem;
+      }
+
+      button {
+        font-size: 1rem;
+      }
+    }
+
+    /* Sticky Footer */
+    footer {
+      background-color: #343a40;
+      color: #ffffff;
+      text-align: center;
+      padding: 1rem;
+      font-size: 1rem;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+      width: 100%;
+    }
+
+    footer p {
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    footer strong {
+      color: #00c3ff;
+    }
+
   </style>
 </head>
 <body>
 
-  <form id="memberForm">
-    <h2>Add Gym Member</h2>
-    <label for="name">Member Name</label>
-    <input type="text" id="name" required />
+  <main>
+    <div class="form-container">
+      <h2><i class="fas fa-user-plus icon"></i>Add Gym Member</h2>
+      <form id="memberForm">
+        <div>
+          <label for="name">Member Name</label>
+          <input type="text" id="name" required />
+        </div>
 
-    <label for="email">Email</label>
-    <input type="email" id="email" required />
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" required />
+        </div>
 
-    <label for="mobile">Mobile Number</label>
-    <input type="tel" id="mobile" required />
+        <div>
+          <label for="mobile">Mobile Number</label>
+          <input type="tel" id="mobile" required />
+        </div>
 
-    <label for="joiningDate">Joining Date</label>
-    <input type="date" id="joiningDate" required />
+        <div>
+          <label for="joiningDate">Joining Date</label>
+          <input type="date" id="joiningDate" required />
+        </div>
 
-    <label for="duration">Duration (months)</label>
-    <select id="duration" required>
-      <option value="">Select Duration</option>
-      <option value="1">1 Month</option>
-      <option value="3">3 Months</option>
-      <option value="6">6 Months</option>
-      <option value="12">12 Months</option>
-    </select>
+        <div>
+          <label for="duration">Duration (months)</label>
+          <select id="duration" required>
+            <option value="">Select Duration</option>
+            <option value="1">1 Month</option>
+            <option value="3">3 Months</option>
+            <option value="6">6 Months</option>
+            <option value="12">12 Months</option>
+          </select>
+        </div>
 
-    <button type="submit">Add Member</button>
-    <p id="msg"></p>
-  </form>
+        <button type="submit"><i class="fas fa-plus-circle icon"></i>Add Member</button>
+      </form>
+      <p id="msg"></p>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 <strong>Gym Management</strong>. All rights reserved. Contact: <strong>vaibhavmalbhage@gmail.com</strong></p>
+  </footer>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
@@ -109,28 +248,31 @@
 
         if (!name || !email || !mobile || !joiningDate || !duration) {
           msg.textContent = "Please fill all fields.";
+          msg.style.color = "red";
           return;
         }
 
         try {
           await addDoc(collection(db, "gyms", user.uid, "members"), {
-            name,
-            email,
-            mobile,
-            joiningDate,
-            duration,
+            name: name,
+            email: email,
+            mobile: mobile,
+            joiningDate: joiningDate,
+            duration: duration,
             createdAt: serverTimestamp()
           });
 
-          msg.textContent = "Member added successfully ✅";
-    
+          msg.textContent = "Member added successfully!";
+          msg.style.color = "green";
           form.reset();
           window.location.href = "/gym-dashboard.html";
-        } catch (err) {
-          msg.textContent = "Error: " + err.message;
+        } catch (error) {
+          msg.textContent = "Error adding member. Please try again.";
+          msg.style.color = "red";
         }
       });
     });
   </script>
+
 </body>
 </html>

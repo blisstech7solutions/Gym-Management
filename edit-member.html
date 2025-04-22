@@ -2,14 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Edit Member</title>
   <style>
+    /* CSS Styles for the Edit Member page */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
       padding: 2rem;
       background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
+
     form {
       background: #fff;
       padding: 2rem;
@@ -17,16 +28,20 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       max-width: 400px;
       margin: auto;
+      flex-grow: 1;
     }
+
     label {
       display: block;
       margin-bottom: 0.5rem;
     }
+
     input, select {
       width: 100%;
       padding: 0.5rem;
       margin-bottom: 1rem;
     }
+
     button {
       padding: 0.7rem 1.5rem;
       background-color: #28a745;
@@ -35,10 +50,41 @@
       border-radius: 4px;
       cursor: pointer;
     }
+
     #msg {
       margin-top: 1rem;
       color: green;
       font-weight: bold;
+    }
+
+    footer {
+      background-color: #343a40;
+      color: #ffffff;
+      text-align: center;
+      padding: 0.75rem 1rem;
+      font-size: 0.9rem;
+      position: sticky;
+      bottom: 0;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    footer p {
+      margin: 0;
+    }
+
+    footer strong {
+      color: #00c3ff;
+    }
+
+    @media (max-width: 500px) {
+      footer {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+      }
     }
   </style>
 </head>
@@ -70,6 +116,10 @@
     <p id="msg"></p>
   </form>
 
+  <footer>
+    <p>&copy; 2025 <strong>Gym Management</strong>. All rights reserved. Contact: <strong>vaibhavmalbhage@gmail.com</strong></p>
+  </footer>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
@@ -91,12 +141,13 @@
 
     const form = document.getElementById('editForm');
     const msg = document.getElementById('msg');
+    debugger
     const params = new URLSearchParams(window.location.search);
-    const memberId = params.get('memberId');
+    const memberId = params.get('id');
 
     onAuthStateChanged(auth, async (user) => {
       if (!user || !memberId) {
-        window.location.href = "/index.html";
+        window.location.href = "/index.html";  // Redirect if no user or memberId
         return;
       }
 
@@ -129,6 +180,8 @@
           });
 
           msg.textContent = "Member updated successfully ✅";
+          window.location.href = "/gym-dashboard.html";
+
         } catch (error) {
           msg.textContent = "Error: " + error.message;
         }

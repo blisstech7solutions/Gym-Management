@@ -2,13 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Gym Dashboard</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
-    .highlight {
-      background-color: #ffcccc;
-    }
+    .highlight { background-color: #ffcccc; }
     .days-warning {
       background-color: #ff6347;
       color: white;
@@ -28,13 +26,8 @@
       display: inline-flex;
       align-items: center;
     }
-    .whatsapp-button:hover {
-      background-color: #1ebe5d;
-    }
-    .whatsapp-icon {
-      width: 20px;
-      height: 20px;
-    }
+    .whatsapp-button:hover { background-color: #1ebe5d; }
+    .whatsapp-icon { width: 20px; height: 20px; }
     .member-card {
       border: 1px solid #ddd;
       border-radius: 10px;
@@ -51,37 +44,66 @@
       #memberTable-container { display: none; }
       #memberCards { display: block; }
     }
+    body, html { height: 100%; margin: 0; }
+    .wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .content {
+      flex: 1;
+    }
+    .footer {
+      background-color: #222;
+      color: #fff;
+      text-align: center;
+      padding: 10px 0;
+    }
   </style>
 </head>
 <body class="bg-light">
-  <div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2>My Gym Members</h2>
-      <button class="btn btn-outline-danger" id="logoutBtn">Logout</button>
+  <div class="wrapper">
+    <div class="content">
+      <div class="container py-5" id="dashboardContainer">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h2>My Gym Members</h2>
+            <p id="gym-details"></p>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-danger" id="logoutBtn">Logout</button>
+            <button class="btn btn-primary" id="addMemberBtn">Add New Member</button>
+          </div>
+        </div>
+
+        <div id="approval-message" class="alert alert-warning d-none" style="text-align: center;"><b>Thank you for registering your gym with us. </b><br>Your account is currently under review by the administrator. 
+         <br> Once approved, you’ll be able to access your dashboard and start managing your members.</div>
+
+        <div id="memberTable-container">
+          <table id="memberTable" class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Joining Date</th>
+                <th>Duration (Months)</th>
+                <th>Days Remaining</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="member-list"></tbody>
+          </table>
+        </div>
+
+        <div id="memberCards"></div>
+      </div>
     </div>
 
-    <div id="memberTable-container">
-      <table id="memberTable" class="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Mobile</th>
-            <th>Joining Date</th>
-            <th>Duration (Months)</th>
-            <th>Days Remaining</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="member-list"></tbody>
-      </table>
-    </div>
-
-    <div id="memberCards"></div>
-
-    <div class="text-end">
-      <button class="btn btn-primary" onclick="location.href='add-member.html'">Add New Member</button>
-    </div>
+    <footer class="footer mt-auto">
+      &copy; 2025 Gym Management. All rights reserved. Contact:
+      <a href="mailto:vaibhavmalbhage@gmail.com" class="text-decoration-none text-light">vaibhavmalbhage@gmail.com</a>
+    </footer>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
@@ -92,7 +114,8 @@
       collection,
       getDocs,
       deleteDoc,
-      doc
+      doc,
+      getDoc
     } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
     import {
       getAuth,
@@ -121,14 +144,9 @@
       const currentDate = new Date();
       const timeDiff = endDate - currentDate;
       const daysRemaining = Math.floor(timeDiff / (1000 * 3600 * 24));
-
-      let displayText = "";
-      if (daysRemaining < 0) {
-        displayText = `Expired (${Math.abs(daysRemaining)} days ago)`;
-      } else {
-        displayText = `${daysRemaining} days`;
-      }
-
+      let displayText = daysRemaining < 0
+        ? `Expired (${Math.abs(daysRemaining)} days ago)`
+        : `${daysRemaining} days`;
       return { daysRemaining, displayText };
     };
 
@@ -140,10 +158,9 @@
 
       members.forEach(member => {
         const { daysRemaining, displayText } = calculateDaysRemaining(member.joiningDate, member.duration);
-
-        let daysClass = '';
-        if (daysRemaining < 0 || daysRemaining < 2) daysClass = 'days-critical';
-        else if (daysRemaining < 5) daysClass = 'days-warning';
+        let daysClass = daysRemaining < 0 || daysRemaining < 2
+          ? 'days-critical'
+          : (daysRemaining < 5 ? 'days-warning' : '');
 
         const tr = document.createElement("tr");
         tr.classList.toggle("highlight", daysRemaining < 5);
@@ -159,13 +176,12 @@
               <button class="btn btn-sm btn-warning" onclick="location.href='edit-member.html?id=${member.id}'">Edit</button>
               <button class="btn btn-sm btn-danger" onclick="deleteMember('${member.id}')">Delete</button>
               <button class="whatsapp-button btn btn-sm" onclick="sendWhatsApp('${member.mobile}', '${member.name}', '${daysRemaining}')">
-                <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="WhatsApp" class="whatsapp-icon">
+                <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" class="whatsapp-icon" />
               </button>
             </div>
           </td>`;
         tbody.appendChild(tr);
 
-        // Card view for mobile
         const card = document.createElement("div");
         card.className = `member-card ${daysClass}`;
         card.innerHTML = `
@@ -179,27 +195,12 @@
             <button class="btn btn-sm btn-warning" onclick="location.href='edit-member.html?id=${member.id}'">Edit</button>
             <button class="btn btn-sm btn-danger" onclick="deleteMember('${member.id}')">Delete</button>
             <button class="whatsapp-button btn btn-sm" onclick="sendWhatsApp('${member.mobile}', '${member.name}', '${daysRemaining}')">
-              <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="WhatsApp" class="whatsapp-icon">
+              <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" class="whatsapp-icon" />
             </button>
           </div>`;
         cardContainer.appendChild(card);
       });
     };
-
-    async function loadMembers() {
-      const memberRef = collection(db, `gyms/${currentUserId}/members`);
-      const snapshot = await getDocs(memberRef);
-      let members = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-      // Sort by lowest daysRemaining
-      members.sort((a, b) => {
-        const aDays = calculateDaysRemaining(a.joiningDate, a.duration).daysRemaining;
-        const bDays = calculateDaysRemaining(b.joiningDate, b.duration).daysRemaining;
-        return aDays - bDays;
-      });
-
-      renderMembers(members);
-    }
 
     window.deleteMember = async (id) => {
       if (confirm("Are you sure you want to delete this member?")) {
@@ -208,22 +209,54 @@
       }
     };
 
-    const sendWhatsApp = function (phone, name, days) {
-      const message = `Hi ${name}, your membership will expire in ${days} days. Please make the payment to continue enjoying the benefits.`;
-      if (!phone) return alert("Invalid phone number");
-      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    const sendWhatsApp = (phone, name, days) => {
+      const msg = `Hi ${name}, your membership will expire in ${days} days. Please make the payment to continue enjoying the benefits.`;
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
       window.open(url, "_blank");
-    }
+    };
     window.sendWhatsApp = sendWhatsApp;
 
+    const loadGymDetails = async () => {
+      const gymDoc = await getDoc(doc(db, "gyms", currentUserId));
+      if (gymDoc.exists()) {
+        const gymData = gymDoc.data();
+        if (!gymData.status || gymData.status !== "approved") {
+          document.getElementById("approval-message").classList.remove("d-none");
+          document.getElementById("memberTable-container").style.display = "none";
+          document.getElementById("memberCards").style.display = "none";
+          document.getElementById("addMemberBtn").style.display = "none";
+        } else {
+          document.getElementById("approval-message").classList.add("d-none");
+          loadMembers();
+        }
+
+        document.getElementById("gym-details").innerHTML = `
+          <strong>Gym Name:</strong> ${gymData.gymName || 'N/A'}<br>
+          <strong>Location:</strong> ${gymData.address || 'N/A'}<br>
+          <strong>Contact:</strong> ${gymData.phone || 'N/A'}`;
+      }
+    };
+
+    const loadMembers = async () => {
+      const snapshot = await getDocs(collection(db, `gyms/${currentUserId}/members`));
+      const members = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      members.sort((a, b) => {
+        const aDays = calculateDaysRemaining(a.joiningDate, a.duration).daysRemaining;
+        const bDays = calculateDaysRemaining(b.joiningDate, b.duration).daysRemaining;
+        return aDays - bDays;
+      });
+      renderMembers(members);
+    };
+
     document.getElementById("logoutBtn").addEventListener("click", () => signOut(auth));
+    document.getElementById("addMemberBtn").addEventListener("click", () => location.href = "add-member.html");
 
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         window.location.href = "/index.html";
       } else {
         currentUserId = user.uid;
-        loadMembers();
+        loadGymDetails();
       }
     });
   </script>

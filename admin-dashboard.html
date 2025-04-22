@@ -19,6 +19,20 @@
         display: none;
       }
     }
+    .footer {
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      background-color: #212529;
+      color: #f8f9fa;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 1000;
+      box-shadow: 0 -2px 6px rgba(0,0,0,0.2);
+    }
   </style>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
@@ -64,12 +78,9 @@
         const location = gym.address || "Not Provided";
         const status = gym.status || "Pending";
 
-        const buttons = status === "approved" ? `
-          <button class="btn btn-danger btn-sm" onclick="deleteGym('${gym.id}')">Delete</button>
-        ` : `
-          <button class="btn btn-success btn-sm" onclick="approveGym('${gym.id}')">Accept</button>
-          <button class="btn btn-danger btn-sm" onclick="declineGym('${gym.id}')">Decline</button>
-        `;
+        const buttons = status === "approved" ? ``
+          : `<button class="btn btn-success btn-sm" onclick="approveGym('${gym.id}')">Accept</button>
+             <button class="btn btn-danger btn-sm" onclick="declineGym('${gym.id}')">Decline</button>`;
 
         return `
           <tr>
@@ -90,12 +101,9 @@
         const location = gym.address || "Not Provided";
         const status = gym.status || "Pending";
 
-        const buttons = status === "approved" ? `
-          <button class="btn btn-danger btn-sm" onclick="deleteGym('${gym.id}')">Delete</button>
-        ` : `
-          <button class="btn btn-success btn-sm me-2" onclick="approveGym('${gym.id}')">Accept</button>
-          <button class="btn btn-danger btn-sm" onclick="declineGym('${gym.id}')">Decline</button>
-        `;
+        const buttons = status === "approved" ? ``
+          : `<button class="btn btn-success btn-sm me-2" onclick="approveGym('${gym.id}')">Accept</button>
+             <button class="btn btn-danger btn-sm" onclick="declineGym('${gym.id}')">Decline</button>`;
 
         return `
           <div class="card mb-3">
@@ -155,7 +163,7 @@
 
     <div class="card table-wrapper">
       <div class="card-body">
-        <h5 class="card-title">Pending Gym Approvals</h5>
+        <h5 class="card-title">Listed Gyms</h5>
         <table class="table table-bordered table-striped">
           <thead>
             <tr>
@@ -178,5 +186,10 @@
       <!-- Mobile cards will populate here -->
     </div>
   </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    &copy; 2025 Gym Management. All rights reserved. Contact: <a href="mailto:vaibhavmalbhage@gmail.com" class="text-decoration-none text-light">vaibhavmalbhage@gmail.com</a>
+  </footer>
 </body>
 </html>
