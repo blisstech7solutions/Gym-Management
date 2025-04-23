@@ -6,10 +6,10 @@
   <title>Gym Management</title>
 
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <!-- AOS Animation -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet"/>
 
   <style>
     * {
@@ -18,220 +18,291 @@
       box-sizing: border-box;
     }
 
+    html {
+      height: 100%;
+    }
+
     body {
-      background: linear-gradient(120deg, #0f2027, #203a43, #2c5364);
-      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
-      color: #fff;
-      position: relative;
-      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      background: #F4F7FB;
+      color: #333;
     }
 
-    /* SVG Gym Background */
-    body::before {
-      content: '';
-      background: url('https://www.svgrepo.com/show/500172/dumbbell.svg') no-repeat center center;
-      background-size: 40%;
-      opacity: 0.05;
-      position: absolute;
-      inset: 0;
-      z-index: 0;
+    header {
+      background: #2a5298;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    .container {
+    header h1 {
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 16px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #00c3ff;
+    }
+
+    nav .btn {
+      background: #00c3ff;
+      padding: 10px 20px;
+      border-radius: 30px;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    nav .btn:hover {
+      background-color: #008cba;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .hero-section {
+      background: #2a5298;
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+      border-radius: 10px;
+      margin: 20px auto;
+      max-width: 1000px;
+    }
+
+    .hero-section h2 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .hero-section p {
+      font-size: 18px;
+      opacity: 0.85;
+    }
+
+    .feature-plan-container {
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-grow: 1;
-      padding: 20px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .card {
-      background-color: rgba(0, 0, 0, 0.85);
-      padding: 40px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-      border-radius: 16px;
-      width: 100%;
-      max-width: 420px;
+      flex-direction: column;
       text-align: center;
-      animation: fadeIn 1s ease-in-out;
-      backdrop-filter: blur(8px);
-      position: relative;
-      font-family: 'Bebas Neue', 'Segoe UI', sans-serif;
+      padding: 40px 20px;
     }
 
-    .card::before {
-      content: "\f44b";
-      font-family: "Font Awesome 6 Free";
-      font-weight: 900;
-      font-size: 42px;
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #000;
-      padding: 12px;
-      box-shadow: 0 0 0 4px #00c3ff;
-      color: #00c3ff;
+    .feature-section {
+      width: 100%;
+      max-width: 1200px;
     }
 
-    .card img {
-      width: 60px;
+    .feature-cards {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .feature-card, .plan-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-align: center;
+      flex: 1 1 250px;
+      max-width: 300px;
+      box-sizing: border-box;
+    }
+
+    .feature-card:hover, .plan-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .feature-card h3 {
+      font-size: 20px;
       margin-bottom: 10px;
-      filter: invert(100%);
-    }
-
-    h2 {
-      font-size: 26px;
-      color: #00c3ff;
-      margin-bottom: 5px;
-      font-weight: 600;
-    }
-
-    .tagline {
-      font-size: 14px;
-      color: #ccc;
-      margin-bottom: 20px;
-      letter-spacing: 1px;
-    }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 10px;
-      border: none;
-      font-size: 16px;
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-    }
-
-    input::placeholder {
-      color: #ccc;
-    }
-
-    input:focus {
-      outline: none;
-      border: 2px solid #00c3ff;
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      margin: 10px 0;
       font-weight: bold;
-      transition: all 0.3s ease;
+      color: #2a5298;
     }
 
-    #action-btn {
+    .feature-card h3 i {
+      margin-right: 10px;
+      color: #00c3ff;
+    }
+
+    .feature-card p {
+      font-size: 16px;
+      opacity: 0.8;
+    }
+
+    .plan-card {
       background: #00c3ff;
-      color: #000;
-    }
-
-    #action-btn:hover {
-      background: #009dcf;
-      transform: scale(1.03);
-    }
-
-    #google-btn {
-      background-color: #db4437;
       color: white;
     }
 
-    #google-btn:hover {
-      background-color: #c1351d;
+    .plan-card h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
     }
 
-    a {
-      color: #00c3ff;
-      text-decoration: none;
-      font-weight: 500;
+    .plan-card ul {
+      list-style: none;
+      margin: 15px 0;
+      padding: 0;
+      text-align: left;
     }
 
-    a:hover {
-      text-decoration: underline;
-    }
-
-    #toggle-form {
+    .plan-card li {
       font-size: 14px;
-      margin-top: 10px;
+      margin-bottom: 10px;
     }
 
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
+    .plan-card a {
+      display: inline-block;
+      background-color: #333;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-size: 14px;
+      margin-top: 15px;
+      transition: background-color 0.3s ease;
+    }
+
+    .plan-card a:hover {
+      background-color: #008cba;
     }
 
     footer {
-      background-color: #111;
+      background: #111;
       color: #aaa;
       text-align: center;
-      padding: 0.75rem 1rem;
-      font-size: 0.85rem;
-      position: sticky;
-      bottom: 0;
-      width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
-      z-index: 2;
+      padding: 15px 0;
+      font-size: 14px;
     }
 
-    footer strong {
-      color: #00c3ff;
-    }
-
-    @media (max-width: 500px) {
-      .card {
-        width: 90%;
-        padding: 25px;
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
       }
 
-      footer {
-        font-size: 0.75rem;
+      nav a {
+        margin-left: 0;
+        margin-top: 10px;
+      }
+
+      .hero-section {
+        padding: 40px 20px;
+      }
+
+      .feature-cards {
+        flex-direction: column;
+        align-items: center;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="card">
-      <!-- Logo -->
-      <!-- <img src="https://www.svgrepo.com/show/500172/dumbbell.svg" alt="Gym Logo" /> -->
 
-      <h2 id="form-title">Sign In</h2>
-      <!-- <p class="tagline">Train Hard. Stay Fit.</p> -->
+  <header>
+    <h1>Gym Management</h1>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#features">Features</a>
+      <a href="#plans">Plans</a>
+      <a href="signupsignin.html" class="btn">Login/Sign Up</a>
+      <!-- <a href="#login" class="btn">Login</a> -->
+    </nav>
+  </header>
 
-      <input type="email" id="email" placeholder="Email" />
-      <input type="password" id="password" placeholder="Password" />
+  <main>
+    <section id="home" class="hero-section">
+      <h2>Streamline Your Gym Operations</h2>
+      <p>Manage members, payments, and track performance effortlessly with our all-in-one Gym Management system.</p>
+    </section>
 
-      <button onclick="handleAuth()" id="action-btn">Sign In</button>
-      <!-- <button id="google-btn" onclick="googleSignIn()">Sign in with Google</button> -->
+    <section class="feature-plan-container" id="features">
+      <div class="feature-section">
+        <div class="feature-cards">
+          <div class="feature-card" data-aos="fade-up">
+            <h3><i class="fas fa-users"></i>Member Management</h3>
+            <p>Efficiently manage all member details with ease and clarity.</p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+            <h3><i class="fas fa-bell"></i>Notifications</h3>
+            <p>Stay on top of renewals, follow-ups, and reminders.</p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+            <h3><i class="fas fa-chart-line"></i>Analytics</h3>
+            <p>Track member attendance, growth, and retention effortlessly.</p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+            <h3><i class="fab fa-whatsapp"></i>One-click WhatsApp Reminder</h3>
+            <p>Send automatic WhatsApp reminders to members with a single click.</p>
+          </div>
+        </div>
+      </div>
 
-      <p id="toggle-form">
-        Don't have an account? <a href="#" onclick="toggleForm()">Sign Up</a>
-      </p>
-
-      <p><a href="#" onclick="forgotPassword()">Forgot Password?</a></p>
-
-      <p id="msg"></p>
-    </div>
-  </div>
+      <div class="plan-card" data-aos="zoom-in">
+         ₹500/month,
+         Unlimited Members
+         &amp;
+          Automated Alerts
+          24/7 Support
+          Dashboard &amp; Analytics
+        
+        <a href="https://www.instamojo.com/@vaibhavclicks/l220d009cc2464168917612b27a68f5ff/" target="_blank">Pay Now</a>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    <p>&copy; 2025 <strong>Gym Management</strong>. All rights reserved. Contact: <strong>vaibhavmalbhage@gmail.com</strong></p>
+    <p>&copy; 2025 Gym Management. Contact: <strong>vaibhavmalbhage@gmail.com</strong></p>
   </footer>
 
-  <script type="module" src="script.js"></script>
+  <!-- AOS Script -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+
+  <!-- WhatsApp Reminder Script -->
+  <script>
+    document.getElementById('sendReminderBtn')?.addEventListener('click', () => {
+      const memberPhone = '9876543210';
+      const message = 'Your membership is about to expire. Please renew your subscription.';
+      fetch('http://localhost:3000/send-whatsapp-reminder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ memberPhone, message })
+      })
+      .then(res => res.json())
+      .then(() => alert('Reminder sent successfully!'))
+      .catch(err => console.error('Error:', err));
+    });
+  </script>
+
 </body>
 </html>
