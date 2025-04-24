@@ -18,17 +18,17 @@
       box-sizing: border-box;
     }
 
-    html {
+    html, body {
       height: 100%;
-    }
-
-    body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
       font-family: 'Segoe UI', sans-serif;
       background: #F4F7FB;
       color: #333;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      padding-top: 80px; /* Space for fixed header */
     }
 
     header {
@@ -38,6 +38,10 @@
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
     }
 
     header h1 {
@@ -45,6 +49,11 @@
       font-size: 28px;
       font-weight: bold;
       text-transform: uppercase;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
     }
 
     nav a {
@@ -72,6 +81,16 @@
 
     nav .btn:hover {
       background-color: #008cba;
+    }
+
+    #menuToggle {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      margin-left: 10px;
+      cursor: pointer;
     }
 
     main {
@@ -130,7 +149,6 @@
       text-align: center;
       flex: 1 1 250px;
       max-width: 300px;
-      box-sizing: border-box;
     }
 
     .feature-card:hover, .plan-card:hover {
@@ -158,6 +176,7 @@
     .plan-card {
       background: #00c3ff;
       color: white;
+      margin-top: 20px;
     }
 
     .plan-card h3 {
@@ -208,13 +227,58 @@
         padding: 15px;
       }
 
-      nav a {
-        margin-left: 0;
-        margin-top: 10px;
+      #menuToggle {
+        display: block;
       }
 
-      .hero-section {
-        padding: 40px 20px;
+      nav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 10px;
+        background: #2a5298;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        padding: 10px 20px;
+      }
+
+      nav.active {
+        display: flex;
+      }
+
+      nav a {
+        margin: 10px 0;
+        font-size: 16px;
+      }
+
+      .hero-section h2 {
+        font-size: 24px;
+      }
+
+      .hero-section p {
+        font-size: 16px;
+      }
+
+      .feature-card h3 {
+        font-size: 18px;
+      }
+
+      .feature-card p {
+        font-size: 14px;
+      }
+
+      .plan-card h3 {
+        font-size: 20px;
+      }
+
+      .plan-card li {
+        font-size: 13px;
+      }
+
+      .plan-card a {
+        font-size: 13px;
+        padding: 10px 20px;
       }
 
       .feature-cards {
@@ -228,12 +292,12 @@
 
   <header>
     <h1>Gym Management</h1>
+    <button id="menuToggle"><i class="fas fa-bars"></i></button>
     <nav>
       <a href="#home">Home</a>
       <a href="#features">Features</a>
       <a href="#plans">Plans</a>
       <a href="signupsignin.html" class="btn">Login/Sign Up</a>
-      <!-- <a href="#login" class="btn">Login</a> -->
     </nav>
   </header>
 
@@ -265,14 +329,14 @@
         </div>
       </div>
 
-      <div class="plan-card" data-aos="zoom-in">
-         ₹500/month,
-         Unlimited Members
-         &amp;
-          Automated Alerts
-          24/7 Support
-          Dashboard &amp; Analytics
-        
+      <div class="plan-card" data-aos="zoom-in" id="plans">
+        <h3>₹500/month</h3>
+        <ul>
+          <li>Unlimited Members</li>
+          <li>Automated Alerts</li>
+          <li>24/7 Support</li>
+          <li>Dashboard & Analytics</li>
+        </ul>
         <a href="https://www.instamojo.com/@vaibhavclicks/l220d009cc2464168917612b27a68f5ff/" target="_blank">Pay Now</a>
       </div>
     </section>
@@ -284,23 +348,21 @@
 
   <!-- AOS Script -->
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script>
-    AOS.init();
-  </script>
+  <script>AOS.init();</script>
 
-  <!-- WhatsApp Reminder Script -->
+  <!-- Menu Toggle Script -->
   <script>
-    document.getElementById('sendReminderBtn')?.addEventListener('click', () => {
-      const memberPhone = '9876543210';
-      const message = 'Your membership is about to expire. Please renew your subscription.';
-      fetch('http://localhost:3000/send-whatsapp-reminder', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ memberPhone, message })
-      })
-      .then(res => res.json())
-      .then(() => alert('Reminder sent successfully!'))
-      .catch(err => console.error('Error:', err));
+    const menuToggle = document.getElementById('menuToggle');
+    const nav = document.querySelector('nav');
+    
+    menuToggle.addEventListener('click', () => {
+      nav.classList.toggle('active');
+    });
+
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('active');
+      });
     });
   </script>
 
