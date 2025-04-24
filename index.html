@@ -11,90 +11,39 @@
   <!-- AOS Animation -->
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet"/>
 
+  <!-- SwiperJS CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      height: 100%;
-      font-family: 'Segoe UI', sans-serif;
-      background: #F4F7FB;
-      color: #333;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      padding-top: 80px; /* Space for fixed header */
-    }
+    /* Basic styles */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; font-family: 'Segoe UI', sans-serif; background: #F4F7FB; color: #333; }
+    body { padding-top: 80px; }
 
     header {
       background: #2a5298;
-      padding: 20px 40px;
+      padding: 15px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       position: fixed;
-      top: 0;
       width: 100%;
+      top: 0;
       z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 
-    header h1 {
-      color: white;
-      font-size: 28px;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
+    header h1 { color: white; font-size: 24px; }
+    nav { display: flex; gap: 20px; align-items: center; }
+    nav a { color: white; text-decoration: none; font-size: 16px; }
+    .btn { background: #00c3ff; padding: 10px 20px; border-radius: 30px; font-weight: bold; }
 
-    nav {
-      display: flex;
-      align-items: center;
-    }
+    #menuToggle { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin-left: 20px;
-      font-size: 16px;
-      font-weight: 500;
-      transition: color 0.3s ease;
-    }
-
-    nav a:hover {
-      color: #00c3ff;
-    }
-
-    nav .btn {
-      background: #00c3ff;
-      padding: 10px 20px;
-      border-radius: 30px;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
-    }
-
-    nav .btn:hover {
-      background-color: #008cba;
-    }
-
-    #menuToggle {
-      display: none;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 24px;
-      margin-left: 10px;
-      cursor: pointer;
-    }
-
-    main {
-      flex: 1;
+    @media (max-width: 768px) {
+      nav { display: none; flex-direction: column; background: #2a5298; position: absolute; top: 65px; left: 0; width: 100%; padding: 20px; }
+      nav.active { display: flex; }
+      #menuToggle { display: block; }
     }
 
     .hero-section {
@@ -103,189 +52,123 @@
       padding: 60px 20px;
       text-align: center;
       border-radius: 10px;
-      margin: 20px auto;
-      max-width: 1000px;
-    }
-
-    .hero-section h2 {
-      font-size: 32px;
-      margin-bottom: 20px;
-      font-weight: bold;
-    }
-
-    .hero-section p {
-      font-size: 18px;
-      opacity: 0.85;
-    }
-
-    .feature-plan-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
-      padding: 40px 20px;
-    }
-
-    .feature-section {
-      width: 100%;
-      max-width: 1200px;
+      margin-bottom: 40px;
     }
 
     .feature-cards {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       gap: 20px;
-      flex-wrap: wrap;
-      margin-bottom: 40px;
     }
 
-    .feature-card, .plan-card {
+    .feature-card {
       background: white;
       padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      text-align: center;
-      flex: 1 1 250px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
       max-width: 300px;
+      flex: 1 1 250px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .feature-card:hover, .plan-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.2);
     }
 
-    .feature-card h3 {
-      font-size: 20px;
-      margin-bottom: 10px;
-      font-weight: bold;
-      color: #2a5298;
-    }
-
-    .feature-card h3 i {
-      margin-right: 10px;
-      color: #00c3ff;
-    }
-
-    .feature-card p {
-      font-size: 16px;
-      opacity: 0.8;
+    .plan-section {
+      text-align: center;
+      padding: 30px 20px;
+      background: #f0f6ff;
     }
 
     .plan-card {
       background: #00c3ff;
       color: white;
-      margin-top: 20px;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 350px;
+      margin: 0 auto;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
 
-    .plan-card h3 {
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-
-    .plan-card ul {
-      list-style: none;
-      margin: 15px 0;
-      padding: 0;
-      text-align: left;
-    }
-
-    .plan-card li {
-      font-size: 14px;
-      margin-bottom: 10px;
-    }
-
+    .plan-card ul { list-style: none; padding: 0; margin: 20px 0; }
+    .plan-card ul li { margin: 8px 0; font-size: 16px; }
     .plan-card a {
       display: inline-block;
-      background-color: #333;
+      background: #111;
+      padding: 10px 25px;
       color: white;
-      padding: 12px 30px;
       border-radius: 30px;
       text-decoration: none;
-      font-size: 14px;
       margin-top: 15px;
-      transition: background-color 0.3s ease;
     }
 
-    .plan-card a:hover {
-      background-color: #008cba;
+    .testimonials, .demo-section, .contact-section { margin: 60px auto; text-align: center; }
+
+    .testimonial {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .swiper {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 0;
+    }
+
+    .swiper-slide img {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .swiper-slide img:hover {
+      transform: scale(1.05);
+    }
+
+    .contact-section form {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .contact-section input, .contact-section textarea {
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .contact-section button {
+      background: #2a5298;
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      margin-top: 10px;
     }
 
     footer {
       background: #111;
       color: #aaa;
       text-align: center;
-      padding: 15px 0;
-      font-size: 14px;
+      padding: 20px 0;
+      margin-top: 40px;
     }
 
-    @media (max-width: 600px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 15px;
-      }
-
-      #menuToggle {
-        display: block;
-      }
-
-      nav {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        margin-top: 10px;
-        background: #2a5298;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        padding: 10px 20px;
-      }
-
-      nav.active {
-        display: flex;
-      }
-
-      nav a {
-        margin: 10px 0;
-        font-size: 16px;
-      }
-
-      .hero-section h2 {
-        font-size: 24px;
-      }
-
-      .hero-section p {
-        font-size: 16px;
-      }
-
-      .feature-card h3 {
-        font-size: 18px;
-      }
-
-      .feature-card p {
-        font-size: 14px;
-      }
-
-      .plan-card h3 {
-        font-size: 20px;
-      }
-
-      .plan-card li {
-        font-size: 13px;
-      }
-
-      .plan-card a {
-        font-size: 13px;
-        padding: 10px 20px;
-      }
-
-      .feature-cards {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
+    footer a { color: #00c3ff; text-decoration: none; }
   </style>
 </head>
 <body>
@@ -294,77 +177,124 @@
     <h1>Gym Management</h1>
     <button id="menuToggle"><i class="fas fa-bars"></i></button>
     <nav>
-      <a href="#home">Home</a>
-      <a href="#features">Features</a>
-      <a href="#plans">Plans</a>
-      <a href="signupsignin.html" class="btn">Login/Sign Up</a>
+      <a href="signupsignin.html" class="btn">Login / Sign Up</a>
     </nav>
   </header>
 
   <main>
-    <section id="home" class="hero-section">
+    <section class="hero-section">
       <h2>Streamline Your Gym Operations</h2>
       <p>Manage members, payments, and track performance effortlessly with our all-in-one Gym Management system.</p>
     </section>
 
-    <section class="feature-plan-container" id="features">
-      <div class="feature-section">
-        <div class="feature-cards">
-          <div class="feature-card" data-aos="fade-up">
-            <h3><i class="fas fa-users"></i>Member Management</h3>
-            <p>Efficiently manage all member details with ease and clarity.</p>
-          </div>
-          <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
-            <h3><i class="fas fa-bell"></i>Notifications</h3>
-            <p>Stay on top of renewals, follow-ups, and reminders.</p>
-          </div>
-          <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
-            <h3><i class="fas fa-chart-line"></i>Analytics</h3>
-            <p>Track member attendance, growth, and retention effortlessly.</p>
-          </div>
-          <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
-            <h3><i class="fab fa-whatsapp"></i>One-click WhatsApp Reminder</h3>
-            <p>Send automatic WhatsApp reminders to members with a single click.</p>
-          </div>
-        </div>
-      </div>
+    <section class="feature-cards">
+      <div class="feature-card"><h3><i class="fas fa-users"></i> Member Management</h3><p>Manage all member details easily.</p></div>
+      <div class="feature-card"><h3><i class="fas fa-bell"></i> Notifications</h3><p>Stay on top of renewals and reminders.</p></div>
+      <div class="feature-card"><h3><i class="fas fa-chart-line"></i> Analytics</h3><p>Track attendance and growth trends.</p></div>
+      <div class="feature-card"><h3><i class="fab fa-whatsapp"></i> WhatsApp Alerts</h3><p>Send quick reminders via WhatsApp.</p></div>
+    </section>
 
-      <div class="plan-card" data-aos="zoom-in" id="plans">
+    <section class="demo-section">
+      <h2>Project Demo</h2>
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide"><img src="/images/signin.png" alt="Signin"></div>
+          <div class="swiper-slide"><img src="/images/Gym Profile.png" alt="Profile"></div>
+          <div class="swiper-slide"><img src="/images/dashboard.png" alt="Dashboard"></div>
+          <div class="swiper-slide"><img src="/images/Add member.png" alt="Add Member"></div>
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </section>
+
+    <section class="plan-section">
+      <div class="plan-card">
         <h3>₹500/month</h3>
         <ul>
-          <li>Unlimited Members</li>
-          <li>Automated Alerts</li>
-          <li>24/7 Support</li>
           <li>Dashboard & Analytics</li>
+          <li>24/7 Support</li>
         </ul>
-        <a href="https://www.instamojo.com/@vaibhavclicks/l220d009cc2464168917612b27a68f5ff/" target="_blank">Pay Now</a>
+        <a href="https://buy.stripe.com/test_9AQ4hv6jzb9NcZa4gh" target="_blank">Pay with Stripe</a>
       </div>
+    </section>
+
+    <section class="contact-section">
+      <h2>Contact Us</h2>
+      <form id="contactForm">
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="email" name="email" placeholder="Your Email" required />
+        <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2025 Gym Management. Contact: <strong>vaibhavmalbhage@gmail.com</strong></p>
+    <p>&copy; 2025 Bliss Tech 7 Solutions | Contact: <strong>vaibhavmalbhage@gmail.com</strong></p>
   </footer>
 
-  <!-- AOS Script -->
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script>AOS.init();</script>
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Import Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
-  <!-- Menu Toggle Script -->
-  <script>
-    const menuToggle = document.getElementById('menuToggle');
-    const nav = document.querySelector('nav');
-    
-    menuToggle.addEventListener('click', () => {
-      nav.classList.toggle('active');
-    });
+    const firebaseConfig = {
+      apiKey: "AIzaSyCY5-w3jLyC9iXN8Kh26wGIVia1zGuGwyk",
+      authDomain: "gym-management-50b12.firebaseapp.com",
+      projectId: "gym-management-50b12",
+      storageBucket: "gym-management-50b12.appspot.com",
+      messagingSenderId: "202067078338",
+      appId: "1:202067078338:web:6ad435b248f3230d7cdf5b",
+      measurementId: "G-SNPQXVF7VF"
+    };
 
-    document.querySelectorAll('nav a').forEach(link => {
-      link.addEventListener('click', () => {
-        nav.classList.remove('active');
-      });
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const form = document.getElementById('contactForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = form.name.value;
+      const email = form.email.value;
+      const message = form.message.value;
+
+      try {
+        await addDoc(collection(db, "contactMessages"), {
+          name,
+          email,
+          message,
+          timestamp: new Date()
+        });
+        alert("Message sent!");
+        form.reset();
+      } catch (error) {
+        console.error("Error sending message:", error);
+        alert("Failed to send message.");
+      }
     });
   </script>
 
+  <!-- AOS + Swiper -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>AOS.init();</script>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script>
+    new Swiper(".mySwiper", {
+      slidesPerView: 1,
+      spaceBetween: 20,
+      loop: true,
+      pagination: { el: ".swiper-pagination", clickable: true },
+      autoplay: { delay: 3000, disableOnInteraction: false },
+      breakpoints: {
+        768: { slidesPerView: 2 },
+        1024: { slidesPerView: 3 },
+      },
+    });
+
+    document.getElementById('menuToggle').addEventListener('click', () => {
+      document.querySelector('nav').classList.toggle('active');
+    });
+  </script>
 </body>
 </html>
