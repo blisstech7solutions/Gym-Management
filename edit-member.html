@@ -5,12 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Edit Member</title>
   <style>
-    /* CSS Styles for the Edit Member page */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: Arial, sans-serif;
@@ -26,7 +21,7 @@
       padding: 2rem;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      max-width: 400px;
+      max-width: 450px;
       margin: auto;
       flex-grow: 1;
     }
@@ -53,7 +48,6 @@
 
     #msg {
       margin-top: 1rem;
-      color: green;
       font-weight: bold;
     }
 
@@ -66,19 +60,10 @@
       position: sticky;
       bottom: 0;
       width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    footer p {
-      margin: 0;
-    }
-
-    footer strong {
-      color: #00c3ff;
-    }
+    footer p { margin: 0; }
+    footer strong { color: #00c3ff; }
 
     @media (max-width: 500px) {
       footer {
@@ -92,6 +77,7 @@
 
   <form id="editForm">
     <h2>Edit Member</h2>
+
     <label for="name">Member Name</label>
     <input type="text" id="name" required />
 
@@ -102,9 +88,9 @@
     <input type="tel" id="mobile" required />
 
     <label for="joiningDate">Joining Date</label>
-    <input type="date" id="joiningDate" required />
+    <input type="date" id="joiningDate" required readonly />
 
-    <label for="duration">Duration (months)</label>
+    <label for="duration">Original Duration (months)</label>
     <select id="duration" required>
       <option value="1">1 Month</option>
       <option value="3">3 Months</option>
@@ -112,12 +98,39 @@
       <option value="12">12 Months</option>
     </select>
 
+    <label for="paymentAmount">Payment Amount (₹)</label>
+    <input type="number" id="paymentAmount" required />
+
+    <label for="paymentStatus">Payment Status</label>
+    <select id="paymentStatus" required>
+      <option value="Paid">Paid</option>
+      <option value="Unpaid">Unpaid</option>
+    </select>
+
+    <label for="renewalDate">Current Renewal Date</label>
+    <input type="date" id="renewalDate" required readonly />
+
+    <label for="renewDuration">Renew Duration (months)</label>
+    <select id="renewDuration">
+      <option value="">-- Select --</option>
+      <option value="1">1 Month</option>
+      <option value="3">3 Months</option>
+      <option value="6">6 Months</option>
+      <option value="12">12 Months</option>
+    </select>
+
+    <label for="newRenewalDate">New Renewal Date</label>
+    <input type="date" id="newRenewalDate" readonly />
+
+    <label for="daysRemaining">Days Remaining</label>
+    <input type="text" id="daysRemaining" readonly />
+
     <button type="submit">Update Member</button>
     <p id="msg"></p>
   </form>
 
   <footer>
-    <p>&copy; 2025 <strong>Gym Management</strong>. All rights reserved. Contact: <strong>vaibhavmalbhage@gmail.com</strong></p>
+    <p><b>© 2025 BlissTech7 Solutions</b> | Contact: vaibhavmalbhage@gmail.com</p>
   </footer>
 
   <script type="module">
@@ -131,23 +144,42 @@
       projectId: "gym-management-50b12",
       storageBucket: "gym-management-50b12.appspot.com",
       messagingSenderId: "202067078338",
-      appId: "1:202067078338:web:6ad435b248f3230d7cdf5b",
-      measurementId: "G-SNPQXVF7VF"
+      appId: "1:202067078338:web:6ad435b248f3230d7cdf5b"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    const form = document.getElementById('editForm');
-    const msg = document.getElementById('msg');
-    debugger
+    const form = document.getElementById("editForm");
+    const msg = document.getElementById("msg");
     const params = new URLSearchParams(window.location.search);
-    const memberId = params.get('id');
+    const memberId = params.get("id");
+
+    const renewalDateInput = document.getElementById("renewalDate");
+    const newRenewalDateInput = document.getElementById("newRenewalDate");
+    const daysRemainingInput = document.getElementById("daysRemaining");
+    const renewDurationSelect = document.getElementById("renewDuration");
+
+    function calculateRenewal() {
+      const currentRenew = new Date(renewalDateInput.value);
+      const renewMonths = parseInt(renewDurationSelect.value);
+
+      if (!isNaN(renewMonths)) {
+        const newRenew = new Date(currentRenew);
+        newRenew.setMonth(newRenew.getMonth() + renewMonths);
+        newRenewalDateInput.value = newRenew.toISOString().split("T")[0];
+
+        const diff = Math.floor((newRenew - new Date()) / (1000 * 3600 * 24));
+        daysRemainingInput.value = diff >= 0 ? `${diff} days` : `Expired ${Math.abs(diff)} days ago`;
+      }
+    }
+
+    renewDurationSelect.addEventListener("change", calculateRenewal);
 
     onAuthStateChanged(auth, async (user) => {
       if (!user || !memberId) {
-        window.location.href = "/index.html";  // Redirect if no user or memberId
+        window.location.href = "/index.html";
         return;
       }
 
@@ -166,23 +198,42 @@
       document.getElementById("mobile").value = data.mobile || "";
       document.getElementById("joiningDate").value = data.joiningDate || "";
       document.getElementById("duration").value = data.duration || "";
+      document.getElementById("paymentAmount").value = data.paymentAmount || "";
+      document.getElementById("paymentStatus").value = data.paymentStatus || "";
+      renewalDateInput.value = data.renewalDate || "";
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const mobile = document.getElementById("mobile").value.trim();
+        const joiningDate = document.getElementById("joiningDate").value;
+        const duration = document.getElementById("duration").value;
+        const paymentAmount = document.getElementById("paymentAmount").value.trim();
+        const paymentStatus = document.getElementById("paymentStatus").value;
+        const newRenewalDate = newRenewalDateInput.value;
+
+        const daysTotal = Math.floor((new Date(newRenewalDate) - new Date(joiningDate)) / (1000 * 3600 * 24));
+
         try {
           await updateDoc(memberRef, {
-            name: document.getElementById("name").value.trim(),
-            email: document.getElementById("email").value.trim(),
-            mobile: document.getElementById("mobile").value.trim(),
-            joiningDate: document.getElementById("joiningDate").value,
-            duration: document.getElementById("duration").value
+            name,
+            email,
+            mobile,
+            joiningDate,
+            duration,
+            paymentAmount,
+            paymentStatus,
+            renewalDate: newRenewalDate,
+            daysTotal
           });
 
-          msg.textContent = "Member updated successfully ✅";
-          window.location.href = "/gym-dashboard.html";
-
+          msg.style.color = "green";
+          msg.textContent = "Membership renewed & updated ✅";
+          setTimeout(() => window.location.href = "/gym-dashboard.html", 1500);
         } catch (error) {
+          msg.style.color = "red";
           msg.textContent = "Error: " + error.message;
         }
       });

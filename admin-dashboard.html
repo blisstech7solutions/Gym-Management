@@ -33,6 +33,9 @@
       z-index: 1000;
       box-shadow: 0 -2px 6px rgba(0,0,0,0.2);
     }
+    .notification-icon {
+      cursor: pointer;
+    }
   </style>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
@@ -66,9 +69,12 @@
 
     const gymList = document.getElementById("gym-list");
     const cardContainer = document.getElementById("gym-cards");
+    const contactMessagesContainer = document.getElementById("contact-messages");
+    const notificationCount = document.getElementById("notification-count");
+
+    let contactMessages = [];
 
     function renderGyms(gyms) {
-      // Sort gyms alphabetically for demo (or implement your sort logic if needed)
       gyms.sort((a, b) => (a.gymName || '').localeCompare(b.gymName || ''));
 
       gymList.innerHTML = gyms.map(gym => {
@@ -78,9 +84,9 @@
         const location = gym.address || "Not Provided";
         const status = gym.status || "Pending";
 
-        const buttons = status === "approved" ? ``
-          : `<button class="btn btn-success btn-sm" onclick="approveGym('${gym.id}')">Accept</button>
-             <button class="btn btn-danger btn-sm" onclick="declineGym('${gym.id}')">Decline</button>`;
+        const buttons = status === "approved" ? `` : ` 
+          <button class="btn btn-success btn-sm" onclick="approveGym('${gym.id}')">Accept</button>
+          <button class="btn btn-danger btn-sm" onclick="declineGym('${gym.id}')">Decline</button>`;
 
         return `
           <tr>
@@ -101,9 +107,9 @@
         const location = gym.address || "Not Provided";
         const status = gym.status || "Pending";
 
-        const buttons = status === "approved" ? ``
-          : `<button class="btn btn-success btn-sm me-2" onclick="approveGym('${gym.id}')">Accept</button>
-             <button class="btn btn-danger btn-sm" onclick="declineGym('${gym.id}')">Decline</button>`;
+        const buttons = status === "approved" ? `` : `
+          <button class="btn btn-success btn-sm me-2" onclick="approveGym('${gym.id}')">Accept</button>
+          <button class="btn btn-danger btn-sm" onclick="declineGym('${gym.id}')">Decline</button>`;
 
         return `
           <div class="card mb-3">
@@ -120,10 +126,38 @@
       }).join("");
     }
 
+    function renderContactMessages(messages) {
+      contactMessagesContainer.innerHTML = messages.map(msg => `
+        <div class="alert alert-info">
+          <strong>From:</strong> ${msg.name} <br/>
+          <strong>Email:</strong> ${msg.email} <br/>
+          <strong>Message:</strong> ${msg.message} <br/>
+          <button class="btn btn-primary btn-sm" onclick="markAsRead('${msg.id}')">Mark as Read</button>
+        </div>
+      `).join("");
+    }
+
     async function loadGyms() {
       const gymsSnapshot = await getDocs(collection(db, "gyms"));
       const gyms = gymsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       renderGyms(gyms);
+    }
+
+    async function loadContactMessages() {
+      const messagesSnapshot = await getDocs(collection(db, "contactMessages"));
+      contactMessages = messagesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      renderContactMessages(contactMessages.filter(msg => !msg.read)); // Only unread messages
+      updateNotificationCount();
+    }
+
+    function updateNotificationCount() {
+      const unreadCount = contactMessages.filter(msg => !msg.read).length;
+      notificationCount.textContent = unreadCount;
+      if (unreadCount === 0) {
+        notificationCount.style.display = "none";  // Hide count if no unread messages
+      } else {
+        notificationCount.style.display = "block"; // Show count if there are unread messages
+      }
     }
 
     window.approveGym = async (id) => {
@@ -136,11 +170,10 @@
       loadGyms();
     };
 
-    window.deleteGym = async (id) => {
-      if (confirm("Are you sure you want to delete this gym?")) {
-        await deleteDoc(doc(db, "gyms", id));
-        loadGyms();
-      }
+    window.markAsRead = async (id) => {
+      const messageRef = doc(db, "contactMessages", id);
+      await updateDoc(messageRef, { read: true });
+      loadContactMessages();
     };
 
     onAuthStateChanged(auth, (user) => {
@@ -148,6 +181,7 @@
         window.location.href = "/index.html";
       } else {
         loadGyms();
+        loadContactMessages(); // Load contact messages on login
       }
     });
 
@@ -159,6 +193,19 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2>Admin Dashboard</h2>
       <button class="btn btn-outline-danger" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- Notification Icon -->
+    <div class="mb-3">
+      <span class="notification-icon" data-bs-toggle="collapse" data-bs-target="#contact-messages">
+        <i class="bi bi-bell-fill"></i> 
+        <span id="notification-count" class="badge bg-danger" style="display: none;">0</span>
+      </span>
+    </div>
+
+    <!-- Contact Messages Section -->
+    <div id="contact-messages" class="collapse">
+      <div id="contact-messages-container"></div>
     </div>
 
     <div class="card table-wrapper">
@@ -189,7 +236,9 @@
 
   <!-- Footer -->
   <footer class="footer">
-    &copy; 2025 Gym Management. All rights reserved. Contact: <a href="mailto:vaibhavmalbhage@gmail.com" class="text-decoration-none text-light">vaibhavmalbhage@gmail.com</a>
+    <p><b>© 2025 BlissTech7 Solutions</b> | Contact: vaibhavmalbhage@gmail.com</p>
   </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
