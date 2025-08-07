@@ -73,7 +73,7 @@ window.handleAuth = () => {
 
         const user = userCred.user;
 
-        if (email === "vaibhavmalbhage@gmail.com") {
+        if (email === "blisstech7solutions@gmail.com") {
           // Admin user
           window.location.href = "/admin-dashboard.html";
         } else {
@@ -105,7 +105,7 @@ window.googleSignIn = () => {
         return;
       }
 
-      if (user.email === "vaibhavmalbhage@gmail.com") {
+      if (user.email === "blisstech7solutions@gmail.com") {
         window.location.href = "/admin-dashboard.html";
       } else {
         const docRef = doc(db, "gyms", user.uid);

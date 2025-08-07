@@ -2,152 +2,266 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gym Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gym Connect</title>
 
   <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
-
-  <!-- AOS Animation -->
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <!-- SwiperJS CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+  <!-- AOS Animation -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
 
   <style>
-    /* Basic styles */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; font-family: 'Segoe UI', sans-serif; background: #F4F7FB; color: #333; }
-    body { padding-top: 80px; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f7fafd;
+      color: #333;
+      scroll-behavior: smooth;
+    }
 
     header {
-      background: #2a5298;
-      padding: 15px 40px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 10px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: fixed;
-      width: 100%;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      z-index: 999;
     }
 
-    header h1 { color: white; font-size: 24px; }
-    nav { display: flex; gap: 20px; align-items: center; }
-    nav a { color: white; text-decoration: none; font-size: 16px; }
-    .btn { background: #00c3ff; padding: 10px 20px; border-radius: 30px; font-weight: bold; }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-    #menuToggle { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+    .logo-img {
+      width: 45px;
+      height: 45px;
+      object-fit: contain;
+    }
+
+    .site-name {
+      font-size: 14px;
+    }
+
+    .gym-title {
+      color: red;
+    }
+
+    .company-name {
+      color: chocolate;
+    }
+
+    nav {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      font-size: 14px;
+      color: #2a5298;
+      padding: 8px 16px;
+      border: 1px solid #2a5298;
+      border-radius: 25px;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      background: #2a5298;
+      color: #fff;
+    }
+
+    #menuToggle {
+      display: none;
+      font-size: 22px;
+      color: #2a5298;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
 
     @media (max-width: 768px) {
-      nav { display: none; flex-direction: column; background: #2a5298; position: absolute; top: 65px; left: 0; width: 100%; padding: 20px; }
-      nav.active { display: flex; }
-      #menuToggle { display: block; }
+      nav {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        background: white;
+        padding: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+      }
+
+      nav.active {
+        display: flex;
+      }
+
+      #menuToggle {
+        display: block;
+      }
+
+      .site-name {
+        font-size: 12px;
+      }
+
+      .logo-img {
+        width: 26px;
+        height: 26px;
+      }
+    }
+
+    main {
+      padding-top: 70px;
     }
 
     .hero-section {
-      background: #2a5298;
-      color: white;
-      padding: 60px 20px;
+      padding: 80px 20px;
       text-align: center;
-      border-radius: 10px;
-      margin-bottom: 40px;
+      background: linear-gradient(135deg, #2a5298, #1e3c72);
+      color: white;
+    }
+
+    .hero-section h2 {
+      font-size: 32px;
+      margin-bottom: 15px;
+    }
+
+    .hero-section p {
+      font-size: 18px;
+      max-width: 600px;
+      margin: 0 auto;
     }
 
     .feature-cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
+      padding: 40px 20px;
     }
 
     .feature-card {
       background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      max-width: 300px;
-      flex: 1 1 250px;
+      padding: 25px;
+      border-radius: 15px;
       text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      transition: 0.3s ease;
     }
 
     .feature-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+    }
+
+    .feature-card i {
+      font-size: 32px;
+      margin-bottom: 15px;
+      color: #2a5298;
+    }
+
+    .feature-card h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
     }
 
     .plan-section {
+      background: #edf4ff;
+      padding: 60px 20px;
       text-align: center;
-      padding: 30px 20px;
-      background: #f0f6ff;
     }
 
     .plan-card {
-      background: #00c3ff;
+      background: #2a5298;
       color: white;
-      padding: 20px;
-      border-radius: 12px;
+      padding: 30px 25px;
+      border-radius: 20px;
       max-width: 350px;
-      margin: 0 auto;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      margin: auto;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
     }
 
-    .plan-card ul { list-style: none; padding: 0; margin: 20px 0; }
-    .plan-card ul li { margin: 8px 0; font-size: 16px; }
+    .plan-card h3 {
+      font-size: 26px;
+      margin-bottom: 15px;
+    }
+
+    .plan-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0;
+    }
+
+    .plan-card ul li {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
     .plan-card a {
       display: inline-block;
-      background: #111;
+      background: #fff;
+      color: #2a5298;
       padding: 10px 25px;
-      color: white;
       border-radius: 30px;
       text-decoration: none;
-      margin-top: 15px;
+      margin-top: 20px;
+      font-weight: bold;
+      transition: background 0.3s;
     }
 
-    .testimonials, .demo-section, .contact-section { margin: 60px auto; text-align: center; }
+    .plan-card a:hover {
+      background: #d6e5ff;
+    }
 
-    .testimonial {
-      background: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      max-width: 600px;
-      margin: 0 auto 20px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    .demo-section {
+      padding: 60px 20px;
+      text-align: center;
     }
 
     .swiper {
-      width: 100%;
-      max-width: 1200px;
+      max-width: 1000px;
       margin: 0 auto;
-      padding: 30px 0;
     }
 
     .swiper-slide img {
       width: 100%;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease;
-      cursor: pointer;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    .swiper-slide img:hover {
-      transform: scale(1.05);
+    .contact-section {
+      padding: 60px 20px;
+      text-align: center;
     }
 
     .contact-section form {
       max-width: 600px;
-      margin: 0 auto;
+      margin: auto;
       display: flex;
       flex-direction: column;
+      gap: 15px;
     }
 
-    .contact-section input, .contact-section textarea {
+    .contact-section input,
+    .contact-section textarea {
       padding: 12px;
-      margin: 10px 0;
-      border-radius: 8px;
+      border-radius: 10px;
       border: 1px solid #ccc;
+      font-size: 16px;
     }
 
     .contact-section button {
@@ -156,148 +270,175 @@
       padding: 12px 30px;
       border: none;
       border-radius: 30px;
+      font-size: 16px;
       cursor: pointer;
-      margin-top: 10px;
+      transition: 0.3s;
+    }
+
+    .contact-section button:hover {
+      background: #1e3c72;
     }
 
     footer {
-      background: #111;
+      background: #1c1c1c;
       color: #aaa;
       text-align: center;
-      padding: 20px 0;
-      margin-top: 40px;
+      padding: 20px;
+      font-size: 14px;
     }
 
-    footer a { color: #00c3ff; text-decoration: none; }
+    footer a {
+      color: #00c3ff;
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Gym Management</h1>
-    <button id="menuToggle"><i class="fas fa-bars"></i></button>
-    <nav>
-      <a href="signupsignin.html" class="btn">Login / Sign Up</a>
-    </nav>
-  </header>
+<header>
+  <div class="logo-container">
+    <img src="/gym connect.png" alt="Gym Connect Logo" class="logo-img" />  <div class="site-name">
+      <b class="gym-title">GYM CONNECT</b> by <b class="company-name">BLISS TECH7 SOLUTIONS</b>
+    </div>
+    <img src="/BLISS TECH7.png" alt="Bliss Tech Logo" class="logo-img" />
+    
+  </div>
 
-  <main>
-    <section class="hero-section">
-      <h2>Streamline Your Gym Operations</h2>
-      <p>Manage members, payments, and track performance effortlessly with our all-in-one Gym Management system.</p>
-    </section>
+  <button id="menuToggle"><i class="fas fa-bars"></i></button>
+  <nav>
+    <a href="signupsignin.html">Login / Sign Up</a>
+  </nav>
+</header>
 
-    <section class="feature-cards">
-      <div class="feature-card"><h3><i class="fas fa-users"></i> Member Management</h3><p>Manage all member details easily.</p></div>
-      <div class="feature-card"><h3><i class="fas fa-bell"></i> Notifications</h3><p>Stay on top of renewals and reminders.</p></div>
-      <div class="feature-card"><h3><i class="fas fa-chart-line"></i> Analytics</h3><p>Track attendance and growth trends.</p></div>
-      <div class="feature-card"><h3><i class="fab fa-whatsapp"></i> WhatsApp Alerts</h3><p>Send quick reminders via WhatsApp.</p></div>
-    </section>
+<main>
+  <section class="hero-section" data-aos="fade-up">
+    <h2>Streamline Your Gym Operations</h2>
+    <p>Manage members, payments, and track performance effortlessly with our all-in-one Gym Management system.</p>
+  </section>
 
-    <section class="demo-section">
-      <h2>Project Demo</h2>
-      <div class="swiper mySwiper">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide"><img src="signin.png" alt="Signin"></div>
-          <div class="swiper-slide"><img src="Gym Profile.png" alt="Profile"></div>
-          <div class="swiper-slide"><img src="dashboard.png" alt="Dashboard"></div>
-          <div class="swiper-slide"><img src="Add member.png" alt="Add Member"></div>
-        </div>
-        <div class="swiper-pagination"></div>
+  <section class="feature-cards">
+    <div class="feature-card" data-aos="zoom-in">
+      <i class="fas fa-users"></i>
+      <h3>Member Management</h3>
+      <p>Manage all member details easily.</p>
+    </div>
+    <div class="feature-card" data-aos="zoom-in">
+      <i class="fas fa-bell"></i>
+      <h3>Notifications</h3>
+      <p>Stay on top of renewals and reminders.</p>
+    </div>
+    <div class="feature-card" data-aos="zoom-in">
+      <i class="fas fa-chart-line"></i>
+      <h3>Analytics</h3>
+      <p>Track attendance and growth trends.</p>
+    </div>
+    <div class="feature-card" data-aos="zoom-in">
+      <i class="fab fa-whatsapp"></i>
+      <h3>WhatsApp Alerts</h3>
+      <p>Send quick reminders via WhatsApp.</p>
+    </div>
+  </section>
+
+  <section class="demo-section" data-aos="fade-up">
+    <h2>Project Demo</h2>
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide"><img src="signin.png" alt="Signin"></div>
+        <div class="swiper-slide"><img src="Gym Profile.png" alt="Profile"></div>
+        <div class="swiper-slide"><img src="dashboard.png" alt="Dashboard"></div>
+        <div class="swiper-slide"><img src="Add member.png" alt="Add Member"></div>
       </div>
-    </section>
+      <div class="swiper-pagination"></div>
+    </div>
+  </section>
 
-    <section class="plan-section">
-      <div class="plan-card">
-        <h3>₹500/month</h3>
-        <ul>
-          <li>Dashboard & Analytics</li>
-          <li>24/7 Support</li>
-        </ul>
-        <!-- <a href="https://buy.stripe.com/test_9AQ4hv6jzb9NcZa4gh" target="_blank">Pay with Stripe</a>
-          -->
-          <a href="https://www.instamojo.com/@vaibhavclicks/l552aa71b568846a6a7f742d3c52e60b9/" rel="im-checkout" data-text="Pay" data-css-style="color:#ffffff; background:#75c26a; width:300px; border-radius:4px"   data-layout="vertical"></a>
-          <script src="https://js.instamojo.com/v1/button.js"></script>
-      </div>
-    </section>
+  <section class="plan-section" data-aos="zoom-in">
+    <div class="plan-card">
+      <h3>₹500/month</h3>
+      <ul>
+        <li>Dashboard & Analytics</li>
+        <li>24/7 Support</li>
+      </ul>
+      <a href="https://www.instamojo.com/@vaibhavclicks/l552aa71b568846a6a7f742d3c52e60b9/"
+         rel="im-checkout"
+         data-text="Pay"
+         data-css-style="color:#ffffff; background:#75c26a; width:300px; border-radius:4px"
+         data-layout="vertical">Subscribe</a>
+      <script src="https://js.instamojo.com/v1/button.js"></script>
+    </div>
+  </section>
 
-    <section class="contact-section">
-      <h2>Contact Us</h2>
-      <form id="contactForm">
-        <input type="text" name="name" placeholder="Your Name" required />
-        <input type="email" name="email" placeholder="Your Email" required />
-        <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-        <button type="submit">Send Message</button>
-      </form>
-    </section>
-  </main>
+  <section class="contact-section" data-aos="fade-up">
+    <h2>Contact Us</h2>
+    <form id="contactForm">
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+</main>
 
-  <footer>
-    <p><b>© 2025 BlissTech7 Solutions</b> | Contact: vaibhavmalbhage@gmail.com</p>
-  </footer>
+<footer>
+  <p><b>© 2025 BlissTech7 Solutions</b> | Contact: blisstech7solutions@gmail.com</p>
+</footer>
 
-  <!-- Firebase SDK -->
-  <script type="module">
-    // Import Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+<!-- Firebase, Swiper, AOS Scripts -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCY5-w3jLyC9iXN8Kh26wGIVia1zGuGwyk",
-      authDomain: "gym-management-50b12.firebaseapp.com",
-      projectId: "gym-management-50b12",
-      storageBucket: "gym-management-50b12.appspot.com",
-      messagingSenderId: "202067078338",
-      appId: "1:202067078338:web:6ad435b248f3230d7cdf5b",
-      measurementId: "G-SNPQXVF7VF"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyCY5-w3jLyC9iXN8Kh26wGIVia1zGuGwyk",
+    authDomain: "gym-management-50b12.firebaseapp.com",
+    projectId: "gym-management-50b12",
+    storageBucket: "gym-management-50b12.appspot.com",
+    messagingSenderId: "202067078338",
+    appId: "1:202067078338:web:6ad435b248f3230d7cdf5b",
+    measurementId: "G-SNPQXVF7VF"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-    const form = document.getElementById('contactForm');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const name = form.name.value;
-      const email = form.email.value;
-      const message = form.message.value;
+  const form = document.getElementById('contactForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = form.name.value;
+    const email = form.email.value;
+    const message = form.message.value;
+    try {
+      await addDoc(collection(db, "contactMessages"), {
+        name, email, message, timestamp: new Date()
+      });
+      alert("Message sent!");
+      form.reset();
+    } catch (error) {
+      console.error("Error sending message:", error);
+      alert("Failed to send message.");
+    }
+  });
+</script>
 
-      try {
-        await addDoc(collection(db, "contactMessages"), {
-          name,
-          email,
-          message,
-          timestamp: new Date()
-        });
-        alert("Message sent!");
-        form.reset();
-      } catch (error) {
-        console.error("Error sending message:", error);
-        alert("Failed to send message.");
-      }
-    });
-  </script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+  new Swiper(".mySwiper", {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    loop: true,
+    pagination: { el: ".swiper-pagination", clickable: true },
+    autoplay: { delay: 3000, disableOnInteraction: false },
+    breakpoints: {
+      768: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 },
+    },
+  });
 
-  <!-- AOS + Swiper -->
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script>AOS.init();</script>
-  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-  <script>
-    new Swiper(".mySwiper", {
-      slidesPerView: 1,
-      spaceBetween: 20,
-      loop: true,
-      pagination: { el: ".swiper-pagination", clickable: true },
-      autoplay: { delay: 3000, disableOnInteraction: false },
-      breakpoints: {
-        768: { slidesPerView: 2 },
-        1024: { slidesPerView: 3 },
-      },
-    });
-
-    document.getElementById('menuToggle').addEventListener('click', () => {
-      document.querySelector('nav').classList.toggle('active');
-    });
-  </script>
+  document.getElementById('menuToggle').addEventListener('click', () => {
+    document.querySelector('nav').classList.toggle('active');
+  });
+</script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>AOS.init();</script>
 </body>
 </html>
