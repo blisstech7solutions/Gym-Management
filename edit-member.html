@@ -284,13 +284,32 @@ function setLoading(state){
   submitBtn.textContent = state ? "Saving..." : "Update Member";
 }
 
-fields.renewDuration.addEventListener("change",()=>{
-  if(!fields.renewDuration.value) return;
-  const d = new Date(fields.renewalDate.value);
-  d.setMonth(d.getMonth() + parseInt(fields.renewDuration.value));
-  fields.newRenewalDate.value = d.toISOString().split("T")[0];
-  fields.daysRemaining.value =
-    Math.floor((d - new Date()) / (1000*3600*24)) + " days";
+fields.renewDuration.addEventListener("change", () => {
+  if (!fields.renewDuration.value) return;
+
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  const oldRenewal = new Date(fields.renewalDate.value);
+  oldRenewal.setHours(0,0,0,0);
+
+  // Convert months to days (30 days standard)
+  const selectedDays = parseInt(fields.renewDuration.value) * 30;
+
+  let expiredDays = 0;
+  if (oldRenewal < today) {
+    expiredDays = Math.floor(
+      (today - oldRenewal) / (1000 * 60 * 60 * 24)
+    );
+  }
+
+  const finalDays = Math.max(0, selectedDays - expiredDays);
+
+  const newDate = new Date(today);
+  newDate.setDate(today.getDate() + finalDays);
+
+  fields.newRenewalDate.value = newDate.toISOString().split("T")[0];
+  fields.daysRemaining.value = finalDays + " days";
 });
 
 onAuthStateChanged(auth, async user=>{
