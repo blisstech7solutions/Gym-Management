@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Edit Member</title>
 
-<!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
 
 <style>
@@ -15,13 +14,10 @@
   --bg:#05070d;
   --card:#0f1424;
   --input:#0b1020;
+  --error:#ff6b6b;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
 
 html,body{
   min-height:100vh;
@@ -30,12 +26,8 @@ html,body{
   color:#fff;
 }
 
-body{
-  display:flex;
-  flex-direction:column;
-}
+body{display:flex;flex-direction:column;}
 
-/* ================= BACKGROUND ================= */
 .page-wrapper{
   flex:1;
   background:
@@ -47,9 +39,8 @@ body{
   padding:40px 20px 100px;
 }
 
-/* ================= CARD ================= */
 .form-card{
-  position:relative;   /* 👈 add this */
+  position:relative;
   width:100%;
   max-width:900px;
   background:var(--card);
@@ -58,87 +49,6 @@ body{
   box-shadow:0 40px 100px rgba(0,0,0,.9);
 }
 
-
-/* ================= TITLE ================= */
-.form-title{
-  text-align:center;
-  margin-bottom:32px;
-}
-
-.form-title h2{
-  font-size:32px;
-  font-weight:800;
-  color:var(--primary);
-}
-
-.form-title p{
-  font-size:14px;
-  color:#bbb;
-  margin-top:6px;
-}
-
-/* ================= GRID ================= */
-form{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:22px 24px;
-}
-
-.form-group{
-  display:flex;
-  flex-direction:column;
-}
-
-.form-group.full{
-  grid-column:1 / -1;
-}
-
-/* ================= LABEL ================= */
-label{
-  font-size:13px;
-  font-weight:600;
-  margin-bottom:8px;
-  color:#ccc;
-}
-
-/* ================= INPUTS ================= */
-input,
-select{
-  height:48px;
-  padding:0 16px;
-  border-radius:12px;
-  border:1px solid #1f2642;
-  background:var(--input);
-  color:#fff;
-  font-size:14px;
-}
-
-input[readonly]{
-  opacity:0.7;
-}
-
-input:focus,
-select:focus{
-  outline:none;
-  border-color:var(--secondary);
-  box-shadow:0 0 0 2px rgba(8,217,214,.25);
-}
-
-/* ================= BUTTON ================= */
-button{
-  grid-column:1 / -1;
-  height:52px;
-  margin-top:10px;
-  border:none;
-  border-radius:32px;
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
-  color:#000;
-  font-weight:800;
-  font-size:15px;
-  cursor:pointer;
-  transition:.3s;
-}
-/* ================= CLOSE BUTTON ================= */
 .close-btn{
   position:absolute;
   top:18px;
@@ -151,34 +61,68 @@ button{
   align-items:center;
   justify-content:center;
   cursor:pointer;
-  transition:.3s;
-  z-index:5;
+}
+.close-btn i{color:#fff;font-size:18px;}
+
+.form-title{text-align:center;margin-bottom:32px;}
+.form-title h2{font-size:32px;font-weight:800;color:var(--primary);}
+.form-title p{font-size:14px;color:#bbb;margin-top:6px;}
+
+form{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:22px 24px;
 }
 
-.close-btn i{
+.form-group{display:flex;flex-direction:column;}
+.form-group.full{grid-column:1/-1;}
+
+label{font-size:13px;font-weight:600;margin-bottom:8px;color:#ccc;}
+
+input,select{
+  height:48px;
+  padding:0 16px;
+  border-radius:12px;
+  border:1px solid #1f2642;
+  background:var(--input);
   color:#fff;
-  font-size:18px;
+  font-size:14px;
 }
 
-.close-btn:hover{
-  background:rgba(255,46,99,0.9);
-  transform:scale(1.05);
+input[readonly]{opacity:0.7;}
+
+.error-text{
+  color:var(--error);
+  font-size:12px;
+  margin-top:4px;
+  display:none;
 }
 
-button:hover{
-  transform:scale(1.03);
-  box-shadow:0 0 30px rgba(255,46,99,.6);
+button{
+  grid-column:1/-1;
+  height:52px;
+  margin-top:10px;
+  border:none;
+  border-radius:32px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#000;
+  font-weight:800;
+  font-size:15px;
+  cursor:pointer;
 }
 
-/* ================= MESSAGE ================= */
+button:disabled{
+  opacity:0.6;
+  cursor:not-allowed;
+}
+
 #msg{
-  grid-column:1 / -1;
+  grid-column:1/-1;
+  text-align:center;
   margin-top:14px;
   font-weight:700;
-  text-align:center;
 }
 
-/* ================= FOOTER ================= */
 footer{
   position:fixed;
   bottom:0;
@@ -191,19 +135,9 @@ footer{
   font-size:13px;
 }
 
-/* ================= MOBILE ================= */
 @media(max-width:768px){
-  .form-card{
-    padding:30px 22px;
-  }
-
-  form{
-    grid-template-columns:1fr;
-  }
-
-  button{
-    height:50px;
-  }
+  form{grid-template-columns:1fr;}
+  .form-card{padding:30px 22px;}
 }
 </style>
 </head>
@@ -212,99 +146,100 @@ footer{
 
 <div class="page-wrapper">
   <div class="form-card">
-<a href="./gym-dashboard.html" class="close-btn" title="Back to Dashboard">x
-  <!-- <i class="fas fa-times"></i> -->
-</a>
+
+    <a href="./gym-dashboard.html" class="close-btn">
+      <i class="fas fa-times"></i>
+    </a>
 
     <div class="form-title">
       <h2>Edit Member</h2>
-      <p>Update member and renewal details</p>
+      <p>Update details or renew membership</p>
     </div>
 
     <form id="editForm">
 
       <div class="form-group">
-        <label>Member Name</label>
-        <input type="text" id="name" required />
+        <label>Name</label>
+        <input id="name"/>
+        <span class="error-text" id="nameError"></span>
       </div>
 
       <div class="form-group">
         <label>Email</label>
-        <input type="email" id="email" required />
+        <input id="email"/>
+        <span class="error-text" id="emailError"></span>
       </div>
 
       <div class="form-group">
-        <label>Mobile Number</label>
-        <input type="tel" id="mobile" required />
+        <label>Mobile</label>
+        <input id="mobile"/>
+        <span class="error-text" id="mobileError"></span>
       </div>
 
       <div class="form-group">
         <label>Joining Date</label>
-        <input type="date" id="joiningDate" readonly required />
+        <input type="date" id="joiningDate" readonly/>
       </div>
 
       <div class="form-group">
-        <label>Original Duration (Months)</label>
-        <select id="duration" required>
-          <option value="1">1 Month</option>
-          <option value="3">3 Months</option>
-          <option value="6">6 Months</option>
-          <option value="12">12 Months</option>
+        <label>Duration</label>
+        <select id="duration">
+          <option value="1">1</option>
+          <option value="3">3</option>
+          <option value="6">6</option>
+          <option value="12">12</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label>Payment Amount (₹)</label>
-        <input type="number" id="paymentAmount" required />
+        <label>Payment Amount</label>
+        <input id="paymentAmount"/>
       </div>
 
       <div class="form-group">
         <label>Payment Status</label>
-        <select id="paymentStatus" required>
+        <select id="paymentStatus">
           <option value="Paid">Paid</option>
           <option value="Unpaid">Unpaid</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label>Current Renewal Date</label>
-        <input type="date" id="renewalDate" readonly required />
+        <label>Current Renewal</label>
+        <input type="date" id="renewalDate" readonly/>
       </div>
 
       <div class="form-group">
-        <label>Renew Duration (Months)</label>
+        <label>Renew Duration (Optional)</label>
         <select id="renewDuration">
           <option value="">-- Select --</option>
-          <option value="1">1 Month</option>
-          <option value="3">3 Months</option>
-          <option value="6">6 Months</option>
-          <option value="12">12 Months</option>
+          <option value="1">1</option>
+          <option value="3">3</option>
+          <option value="6">6</option>
+          <option value="12">12</option>
         </select>
       </div>
 
       <div class="form-group">
         <label>New Renewal Date</label>
-        <input type="date" id="newRenewalDate" readonly />
+        <input type="date" id="newRenewalDate" readonly/>
       </div>
 
       <div class="form-group full">
         <label>Days Remaining</label>
-        <input type="text" id="daysRemaining" readonly />
+        <input id="daysRemaining" readonly/>
       </div>
 
-      <button type="submit">Update Member</button>
+      <button type="submit" id="submitBtn">Update Member</button>
       <p id="msg"></p>
 
     </form>
-
   </div>
 </div>
 
-<footer>
-  © 2025 <b>BlissTech7 Solutions</b> | blisstech7solutions@gmail.com
-</footer>
+<footer>© 2025 BlissTech7 Solutions</footer>
 
-<!-- ================= ORIGINAL FUNCTIONALITY (UNCHANGED) ================= -->
+<!-- ================= SCRIPT ================= -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
@@ -323,93 +258,85 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const form = document.getElementById("editForm");
+/* ========= CENTRAL FORM BINDING ========= */
+const fields = {
+  name: document.getElementById("name"),
+  email: document.getElementById("email"),
+  mobile: document.getElementById("mobile"),
+  joiningDate: document.getElementById("joiningDate"),
+  duration: document.getElementById("duration"),
+  paymentAmount: document.getElementById("paymentAmount"),
+  paymentStatus: document.getElementById("paymentStatus"),
+  renewalDate: document.getElementById("renewalDate"),
+  renewDuration: document.getElementById("renewDuration"),
+  newRenewalDate: document.getElementById("newRenewalDate"),
+  daysRemaining: document.getElementById("daysRemaining")
+};
+
+const submitBtn = document.getElementById("submitBtn");
 const msg = document.getElementById("msg");
+
 const params = new URLSearchParams(window.location.search);
 const memberId = params.get("id");
 
-const renewalDateInput = document.getElementById("renewalDate");
-const newRenewalDateInput = document.getElementById("newRenewalDate");
-const daysRemainingInput = document.getElementById("daysRemaining");
-const renewDurationSelect = document.getElementById("renewDuration");
-
-function calculateRenewal(){
-  const currentRenew = new Date(renewalDateInput.value);
-  const renewMonths = parseInt(renewDurationSelect.value);
-
-  if(!isNaN(renewMonths)){
-    const newRenew = new Date(currentRenew);
-    newRenew.setMonth(newRenew.getMonth() + renewMonths);
-    newRenewalDateInput.value = newRenew.toISOString().split("T")[0];
-
-    const diff = Math.floor((newRenew - new Date()) / (1000 * 3600 * 24));
-    daysRemainingInput.value = diff >= 0 ? `${diff} days` : `Expired ${Math.abs(diff)} days ago`;
-  }
+function setLoading(state){
+  submitBtn.disabled = state;
+  submitBtn.textContent = state ? "Saving..." : "Update Member";
 }
 
-renewDurationSelect.addEventListener("change", calculateRenewal);
+fields.renewDuration.addEventListener("change",()=>{
+  if(!fields.renewDuration.value) return;
+  const d = new Date(fields.renewalDate.value);
+  d.setMonth(d.getMonth() + parseInt(fields.renewDuration.value));
+  fields.newRenewalDate.value = d.toISOString().split("T")[0];
+  fields.daysRemaining.value =
+    Math.floor((d - new Date()) / (1000*3600*24)) + " days";
+});
 
 onAuthStateChanged(auth, async user=>{
   if(!user || !memberId){
-    window.location.href="/index.html";
+    location.href="/index.html";
     return;
   }
 
-  const memberRef = doc(db,"gyms",user.uid,"members",memberId);
-  const snap = await getDoc(memberRef);
-
-  if(!snap.exists()){
-    msg.textContent="Member not found.";
-    return;
-  }
-
+  const ref = doc(db,"gyms",user.uid,"members",memberId);
+  const snap = await getDoc(ref);
   const data = snap.data();
 
-  document.getElementById("name").value = data.name || "";
-  document.getElementById("email").value = data.email || "";
-  document.getElementById("mobile").value = data.mobile || "";
-  document.getElementById("joiningDate").value = data.joiningDate || "";
-  document.getElementById("duration").value = data.duration || "";
-  document.getElementById("paymentAmount").value = data.paymentAmount || "";
-  document.getElementById("paymentStatus").value = data.paymentStatus || "";
-  renewalDateInput.value = data.renewalDate || "";
+  Object.keys(fields).forEach(k=>{
+    if(data[k]!==undefined && fields[k]) fields[k].value = data[k];
+  });
 
-  form.addEventListener("submit", async e=>{
+  document.getElementById("editForm").addEventListener("submit", async e=>{
     e.preventDefault();
+    setLoading(true);
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const mobile = document.getElementById("mobile").value.trim();
-    const joiningDate = document.getElementById("joiningDate").value;
-    const duration = document.getElementById("duration").value;
-    const paymentAmount = document.getElementById("paymentAmount").value.trim();
-    const paymentStatus = document.getElementById("paymentStatus").value;
-    const newRenewalDate = newRenewalDateInput.value;
+    let finalRenewal = data.renewalDate;
+    let finalDays = data.daysTotal;
 
-    const daysTotal = Math.floor(
-      (new Date(newRenewalDate) - new Date(joiningDate)) / (1000 * 3600 * 24)
-    );
-
-    try{
-      await updateDoc(memberRef,{
-        name,
-        email,
-        mobile,
-        joiningDate,
-        duration,
-        paymentAmount,
-        paymentStatus,
-        renewalDate:newRenewalDate,
-        daysTotal
-      });
-
-      msg.style.color="lime";
-      msg.textContent="Membership renewed & updated ✅";
-      setTimeout(()=>window.location.href="./gym-dashboard.html",1500);
-    }catch(err){
-      msg.style.color="red";
-      msg.textContent="Error: "+err.message;
+    if(fields.renewDuration.value){
+      finalRenewal = fields.newRenewalDate.value;
+      finalDays = Math.floor(
+        (new Date(finalRenewal) - new Date(fields.joiningDate.value)) /
+        (1000*3600*24)
+      );
     }
+
+    await updateDoc(ref,{
+      name: fields.name.value.trim(),
+      email: fields.email.value.trim(),
+      mobile: fields.mobile.value.trim(),
+      joiningDate: fields.joiningDate.value,
+      duration: fields.duration.value,
+      paymentAmount: fields.paymentAmount.value,
+      paymentStatus: fields.paymentStatus.value,
+      renewalDate: finalRenewal,
+      daysTotal: finalDays
+    });
+
+    msg.style.color="lime";
+    msg.textContent="Member updated successfully";
+    setTimeout(()=>location.href="./gym-dashboard.html",1500);
   });
 });
 </script>
