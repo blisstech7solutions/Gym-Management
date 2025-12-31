@@ -1,330 +1,339 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gym Dashboard</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <style>
-    body, html {
-      height: 100%;
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      background: #f4f7fc;
-      display: flex;
-      flex-direction: column;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gym Dashboard</title>
 
-    .highlight { background-color: #ffcccc; }
-    .days-warning {
-      background-color: #ff6347;
-      color: white;
-      font-weight: bold;
-    }
-    .days-critical {
-      background-color: #dc3545 !important;
-      color: white;
-      font-weight: bold;
-    }
-    .whatsapp-button {
-      background-color: #25D366;
-      color: white;
-      border: none;
-      font-size: 16px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      transition: background-color 0.3s ease;
-    }
-    .whatsapp-button:hover { background-color: #1ebe5d; }
-    .whatsapp-icon { width: 20px; height: 20px; }
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
 
-    .member-card {
-      border-radius: 15px;
-      padding: 20px;
-      margin-bottom: 15px;
-      background-color: white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .member-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
-    .member-card .btn {
-      transition: background-color 0.3s ease;
-    }
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-    .footer {
-      background-color: #222;
-      color: #fff;
-      text-align: center;
-      padding: 15px 0;
-      margin-top: auto;
-    }
+<style>
+:root{
+  --primary:#ff2e63;
+  --secondary:#08d9d6;
+  --dark:#06080f;
+  --glass:rgba(255,255,255,0.08);
+}
 
-    .btn-custom {
-      background-color: #007bff;
-      color: white;
-      border-radius: 30px;
-      padding: 10px 30px;
-      font-weight: 600;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-    .btn-custom:hover {
-      background-color: #0056b3;
-      transform: scale(1.05);
-    }
+body,html{
+  height:100%;
+  margin:0;
+  font-family:'Montserrat',sans-serif;
+  background:#05070d;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+}
 
-    .container-custom {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+/* ================= GLOBAL STATES ================= */
+.highlight{background:rgba(255,46,99,0.15)!important;}
+.days-warning{background:#ff9800!important;color:#000;font-weight:700;}
+.days-critical{background:#dc3545!important;color:#fff;font-weight:700;}
 
-    .header {
-      background: linear-gradient(135deg, #6e7bff, #4e5bf2);
-      color: white;
-      padding: 50px 0;
-      border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
+/* ================= HEADER WITH IMAGE ================= */
+.dashboard-header{
+  position:relative;
+  background:
+    linear-gradient(to bottom,rgba(0,0,0,.55),rgba(0,0,0,.9)),
+    url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48") center/cover;
+  border-radius:24px;
+  padding:60px 25px;
+  margin:20px;
+  box-shadow:0 25px 60px rgba(0,0,0,.7);
+}
 
-    .header h2 {
-      font-size: 32px;
-      font-weight: bold;
-    }
+.dashboard-header h2{
+  font-weight:800;
+  color:var(--primary);
+  font-size:clamp(26px,5vw,38px);
+}
 
-    .header p {
-      font-size: 18px;
-    }
+.dashboard-header p{
+  font-size:14px;
+  color:#ddd;
+  margin-top:5px;
+}
 
-    @media (min-width: 768px) {
-      #memberTable-container { display: block; }
-      #memberCards { display: none; }
-    }
-    @media (max-width: 767px) {
-      #memberTable-container { display: none; }
-      #memberCards { display: block; }
-    }
+/* ================= CONTAINER ================= */
+.container-custom{
+  max-width:1400px;
+  margin:auto;
+  padding:10px 20px 40px;
+}
 
-  </style>
+/* ================= ACTION BAR ================= */
+.action-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap;
+  margin-bottom:30px;
+}
+
+.btn-custom{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#000;
+  border:none;
+  border-radius:30px;
+  padding:10px 26px;
+  font-weight:700;
+  transition:.3s;
+}
+.btn-custom:hover{transform:scale(1.05);}
+
+/* ================= TABLE ================= */
+.table{
+  background:var(--glass);
+  backdrop-filter:blur(14px);
+  border-radius:18px;
+  overflow:hidden;
+  color:#fff;
+}
+
+.table th{
+  background:rgba(255,255,255,.15)!important;
+  color:#fff;
+  font-size:13px;
+}
+
+.table td{
+  font-size:13px;
+  vertical-align:middle;
+}
+
+/* ================= WHATSAPP ================= */
+.whatsapp-button{
+  background:#25D366;
+  border:none;
+  border-radius:30px;
+  padding:6px 12px;
+  display:inline-flex;
+  align-items:center;
+}
+.whatsapp-button:hover{background:#1ebe5d;}
+.whatsapp-icon{width:20px;height:20px;}
+
+/* ================= MEMBER CARD (MOBILE) ================= */
+.member-card{
+  background:
+    linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,.8)),
+    url("https://images.unsplash.com/photo-1571019613578-2b1931c9b34b") center/cover;
+  border-radius:22px;
+  padding:20px;
+  box-shadow:0 20px 40px rgba(0,0,0,.6);
+  transition:.4s;
+  height:100%;
+}
+
+.member-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 25px 60px rgba(255,46,99,.4);
+}
+
+.member-card h5{
+  color:var(--secondary);
+  font-weight:700;
+}
+
+.member-card p{
+  font-size:13px;
+  color:#ddd;
+}
+
+/* ================= FOOTER ================= */
+.footer{
+  background:#02030a;
+  text-align:center;
+  padding:18px;
+  margin-top:auto;
+  font-size:13px;
+  color:#aaa;
+}
+
+/* ================= RESPONSIVE SWITCH ================= */
+@media (min-width:768px){
+  #memberTable-container{display:block;}
+  #memberCards{display:none;}
+}
+@media (max-width:767px){
+  #memberTable-container{display:none;}
+  #memberCards{display:block;}
+}
+</style>
 </head>
+
 <body>
 
-  <div class="container-custom">
-    <div class="header text-center">
-      <h2>Welcome to Your Gym Dashboard</h2>
-      <p id="gym-details"></p>
-    </div>
+<!-- ===== HEADER WITH GYM INFO ===== -->
+<div class="dashboard-header">
+  <h2>Gym Dashboard</h2>
+  <p id="gym-details"></p>
+</div>
 
-    <div class="content py-5">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-          <h4>My Gym Members</h4>
-        </div>
-        <div class="d-flex gap-2">
-          <button class="btn btn-outline-danger" id="logoutBtn">Logout</button>
-          <button class="btn btn-custom" id="addMemberBtn">Add New Member</button>
-        </div>
-      </div>
+<div class="container-custom">
 
-      <div id="approval-message" class="alert alert-warning d-none" style="text-align: center;">
-        <b>Thank you for registering your gym with us.</b><br>
-        Your account is currently under review by the administrator.<br>
-        Once approved, you’ll be able to access your dashboard and start managing your members.
-      </div>
-
-      <div id="memberTable-container">
-        <table id="memberTable" class="table table-striped table-bordered">
-          <thead class="table-primary">
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Mobile</th>
-              <th>Joining Date</th>
-              <th>Duration (Months)</th>
-              <th>Renewal Date</th>
-              <th>Total Days</th>
-              <th>Payment</th>
-              <th>Status</th>
-              <th>Days Remaining</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="member-list"></tbody>
-        </table>
-      </div>
-
-      <div id="memberCards" class="row row-cols-1 row-cols-md-2 row-cols-lg-3"></div>
+  <!-- ===== ACTION BAR ===== -->
+  <div class="action-bar">
+    <h4 class="m-0">My Gym Members</h4>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-danger" id="logoutBtn">Logout</button>
+      <button class="btn btn-custom" id="addMemberBtn">Add Member</button>
     </div>
   </div>
 
-  <footer class="footer mt-auto">
-    <p><b>© 2025 BlissTech7 Solutions</b> | Contact: blisstech7solutions@gmail.com</p>
-  </footer>
+  <!-- ===== APPROVAL MESSAGE ===== -->
+  <div id="approval-message" class="alert alert-warning d-none text-center">
+    <b>Thank you for registering your gym.</b><br>
+    Your account is currently under admin review.
+  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
-    import {
-      getFirestore,
-      collection,
-      getDocs,
-      deleteDoc,
-      doc,
-      getDoc
-    } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
-    import {
-      getAuth,
-      onAuthStateChanged,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
-  
-    const firebaseConfig = {
-      apiKey: "AIzaSyCY5-w3jLyC9iXN8Kh26wGIVia1zGuGwyk",
-      authDomain: "gym-management-50b12.firebaseapp.com",
-      projectId: "gym-management-50b12",
-      storageBucket: "gym-management-50b12.appspot.com",
-      messagingSenderId: "202067078338",
-      appId: "1:202067078338:web:6ad435b248f3230d7cdf5b",
-      measurementId: "G-SNPQXVF7VF"
-    };
-  
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-    let currentUserId;
-  
-    const calculateDaysRemaining = (joiningDate, duration, renewalDate) => {
-      const joiningDateObj = new Date(joiningDate);
-      const endDate = new Date(joiningDateObj);
-      endDate.setMonth(joiningDateObj.getMonth() + parseInt(duration));
-      const currentDate = new Date();
-      const timeDiff = endDate - currentDate;
-      const daysRemaining = Math.floor(timeDiff / (1000 * 3600 * 24));
-  
-      const renewalDateObj = new Date(renewalDate);
-      const renewalTimeDiff = renewalDateObj - currentDate;
-      const renewalDaysRemaining = Math.floor(renewalTimeDiff / (1000 * 3600 * 24));
-  
-      let displayText = renewalDaysRemaining < 0
-        ? `Renewal Expired (${Math.abs(renewalDaysRemaining)} days ago)`
-        : `${renewalDaysRemaining} days`;
-  
-      return { renewalDaysRemaining, displayText };
-    };
-  
-    const renderMembers = (members) => {
-      const tbody = document.getElementById("member-list");
-      const cardContainer = document.getElementById("memberCards");
-      tbody.innerHTML = "";
-      cardContainer.innerHTML = "";
-  
-      members.forEach(member => {
-        const { renewalDaysRemaining, displayText } = calculateDaysRemaining(member.joiningDate, member.duration, member.renewalDate);
-        let daysClass = renewalDaysRemaining < 0 || renewalDaysRemaining < 2
-          ? 'days-critical'
-          : (renewalDaysRemaining < 5 ? 'days-warning' : '');
-  
-        const tr = document.createElement("tr");
-        tr.classList.toggle("highlight", renewalDaysRemaining < 5);
-        tr.innerHTML = `
-          <td>${member.name || 'N/A'}</td>
-          <td>${member.email || 'N/A'}</td>
-          <td>${member.mobile || 'N/A'}</td>
-          <td>${member.joiningDate || 'N/A'}</td>
-          <td>${member.duration || 'N/A'}</td>
-          <td>${member.renewalDate || 'N/A'}</td>
-          <td>${member.daysTotal || 'N/A'} days</td>
-          <td>₹${member.paymentAmount || '0'}</td>
-          <td>${member.paymentStatus || 'N/A'}</td>
-          <td class="${daysClass}">${displayText}</td>
-          <td>
-            <div class="d-flex gap-2 justify-content-center align-items-center">
-              <button class="btn btn-sm btn-warning" onclick="location.href='edit-member.html?id=${member.id}'">Edit</button>
-              <button class="btn btn-sm btn-danger" onclick="deleteMember('${member.id}')">Delete</button>
-              <button class="whatsapp-button btn btn-sm" onclick="sendWhatsApp('${member.mobile}', '${member.name}', '${renewalDaysRemaining}')">
-                <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" class="whatsapp-icon" />
-              </button>
-            </div>
-          </td>`;
-        tbody.appendChild(tr);
-  
-        const card = document.createElement("div");
-        card.className = `col mb-4`;
-        card.innerHTML = `
-          <div class="member-card ${daysClass}">
-            <h5>${member.name}</h5>
-            <p><strong>Email:</strong> ${member.email || 'N/A'}</p>
-            <p><strong>Mobile:</strong> ${member.mobile || 'N/A'}</p>
-            <p><strong>Joining Date:</strong> ${member.joiningDate || 'N/A'}</p>
-            <p><strong>Duration:</strong> ${member.duration || 'N/A'} months</p>
-            <p><strong>Renewal Date:</strong> ${member.renewalDate || 'N/A'}</p>
-            <p><strong>Total Days:</strong> ${member.daysTotal || 'N/A'} days</p>
-            <p><strong>Payment:</strong> ₹${member.paymentAmount || '0'} (${member.paymentStatus || 'N/A'})</p>
-            <p><strong>Days Remaining:</strong> ${displayText}</p>
-            <div class="d-flex gap-2">
-              <button class="btn btn-sm btn-warning" onclick="location.href='edit-member.html?id=${member.id}'">Edit</button>
-              <button class="btn btn-sm btn-danger" onclick="deleteMember('${member.id}')">Delete</button>
-              <button class="whatsapp-button btn btn-sm" onclick="sendWhatsApp('${member.mobile}', '${member.name}', '${renewalDaysRemaining}')">
-                <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" class="whatsapp-icon" />
-              </button>
-            </div>
-          </div>`;
-        cardContainer.appendChild(card);
-      });
-    };
-  
-    const loadGymDetails = async () => {
-      const gymDoc = await getDoc(doc(db, "gyms", currentUserId));
-      const gymData = gymDoc.data();
-      document.getElementById("gym-details").textContent = `${gymData.gymName} | ${gymData.address}`;
-    };
-  
-    const loadMembers = async () => {
-      const membersSnapshot = await getDocs(collection(db, "gyms", currentUserId, "members"));
-      const members = [];
-      membersSnapshot.forEach((doc) => {
-        const data = doc.data();
-        data.id = doc.id;
-        members.push(data);
-      });
-      renderMembers(members);
-    };
-  
-    const sendWhatsApp = (mobile, name, remainingDays) => {
-      const message = `Hello ${name},\nYour gym membership is about to expire in ${remainingDays} days. Kindly renew it soon!`;
-      const url = `https://wa.me/${mobile}?text=${encodeURIComponent(message)}`;
-      window.open(url, "_blank");
-    };
-    window.sendWhatsApp = sendWhatsApp;
-  
-    const deleteMember = async (id) => {
-      const confirmDelete = confirm("Are you sure you want to delete this member?");
-      if (confirmDelete) {
-        await deleteDoc(doc(db, "gyms", currentUserId, "members", id));
-        loadMembers();
-      }
-    };
-    window.deleteMember = deleteMember;
-  
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        currentUserId = user.uid;
-        loadGymDetails();
-        loadMembers();
-      } else {
-        location.href = "index.html";
-      }
-    });
-  
-    $("#logoutBtn").click(() => {
-      signOut(auth);
-    });
-  
-    $("#addMemberBtn").click(() => {
-      location.href = "add-member.html";
-    });
-  </script>
-  
+  <!-- ===== TABLE VIEW ===== -->
+  <div id="memberTable-container">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Mobile</th>
+          <th>Joining</th>
+          <th>Duration</th>
+          <th>Renewal</th>
+          <th>Total</th>
+          <th>Payment</th>
+          <th>Status</th>
+          <th>Remaining</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="member-list"></tbody>
+    </table>
+  </div>
+
+  <!-- ===== CARD VIEW (MOBILE) ===== -->
+  <div id="memberCards" class="row row-cols-1 row-cols-md-2 row-cols-lg-3"></div>
+
+</div>
+
+<footer class="footer">
+  © 2025 BlissTech7 Solutions | blisstech7solutions@gmail.com
+</footer>
+
+<!-- ===================== SCRIPTS (UNCHANGED FUNCTIONALITY) ===================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+import { getFirestore, collection, getDocs, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCY5-w3jLyC9iXN8Kh26wGIVia1zGuGwyk",
+  authDomain: "gym-management-50b12.firebaseapp.com",
+  projectId: "gym-management-50b12",
+  storageBucket: "gym-management-50b12.appspot.com",
+  messagingSenderId: "202067078338",
+  appId: "1:202067078338:web:6ad435b248f3230d7cdf5b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+let currentUserId;
+
+/* ===== SAME LOGIC ===== */
+const calculateDaysRemaining=(joiningDate,duration,renewalDate)=>{
+  const rd=new Date(renewalDate);
+  const now=new Date();
+  const diff=Math.floor((rd-now)/(1000*3600*24));
+  return {renewalDaysRemaining:diff,displayText:diff<0?`Expired ${Math.abs(diff)} days ago`:`${diff} days`};
+};
+
+const renderMembers=(members)=>{
+  const tbody=document.getElementById("member-list");
+  const cards=document.getElementById("memberCards");
+  tbody.innerHTML=""; cards.innerHTML="";
+
+  members.forEach(m=>{
+    const {renewalDaysRemaining,displayText}=calculateDaysRemaining(m.joiningDate,m.duration,m.renewalDate);
+    let cls=renewalDaysRemaining<2?'days-critical':renewalDaysRemaining<5?'days-warning':'';
+
+    tbody.innerHTML+=`
+    <tr class="${renewalDaysRemaining<5?'highlight':''}">
+      <td>${m.name}</td><td>${m.email}</td><td>${m.mobile}</td>
+      <td>${m.joiningDate}</td><td>${m.duration}</td><td>${m.renewalDate}</td>
+      <td>${m.daysTotal} days</td><td>₹${m.paymentAmount}</td>
+      <td>${m.paymentStatus}</td>
+      <td class="${cls}">${displayText}</td>
+      <td>
+        <div class="d-flex gap-2">
+          <button class="btn btn-sm btn-warning" onclick="location.href='edit-member.html?id=${m.id}'">Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteMember('${m.id}')">Delete</button>
+          <button class="whatsapp-button" onclick="sendWhatsApp('${m.mobile}','${m.name}','${renewalDaysRemaining}')">
+            <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" class="whatsapp-icon">
+          </button>
+        </div>
+      </td>
+    </tr>`;
+
+    cards.innerHTML+=`
+    <div class="col mb-4">
+      <div class="member-card ${cls}">
+        <h5>${m.name}</h5>
+        <p>Email: ${m.email}</p>
+        <p>Mobile: ${m.mobile}</p>
+        <p>Renewal: ${displayText}</p>
+        <div class="d-flex gap-2">
+          <button class="btn btn-warning btn-sm" onclick="location.href='edit-member.html?id=${m.id}'">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteMember('${m.id}')">Delete</button>
+        </div>
+      </div>
+    </div>`;
+  });
+};
+
+window.sendWhatsApp=(mob,name,days)=>{
+  window.open(`https://wa.me/${mob}?text=${encodeURIComponent(`Hello ${name}, your membership expires in ${days} days.`)}`);
+};
+
+window.deleteMember=async(id)=>{
+  if(confirm("Delete member?")){
+    await deleteDoc(doc(db,"gyms",currentUserId,"members",id));
+    loadMembers();
+  }
+};
+
+const loadMembers=async()=>{
+  const snap=await getDocs(collection(db,"gyms",currentUserId,"members"));
+  const arr=[];
+  snap.forEach(d=>{let x=d.data();x.id=d.id;arr.push(x);});
+  renderMembers(arr);
+};
+
+const loadGymDetails=async()=>{
+  const gymDoc=await getDoc(doc(db,"gyms",currentUserId));
+  if(gymDoc.exists()){
+    const g=gymDoc.data();
+    document.getElementById("gym-details").textContent=`${g.gymName} | ${g.address}`;
+  }
+};
+
+onAuthStateChanged(auth,user=>{
+  if(user){
+    currentUserId=user.uid;
+    loadGymDetails();
+    loadMembers();
+  } else location.href="index.html";
+});
+
+$("#logoutBtn").click(()=>signOut(auth));
+$("#addMemberBtn").click(()=>location.href="add-member.html");
+</script>
+
+</body>
+</html>

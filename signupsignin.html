@@ -1,239 +1,293 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gym Management</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gym Management</title>
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
 
-  <style>
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<style>
+:root{
+  --primary:#00c3ff;
+  --dark:#05070d;
+  --card:#0f1424;
+  --input:#0b1020;
+}
 
-    body {
-      background: linear-gradient(120deg, #0f2027, #203a43, #2c5364);
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      color: #fff;
-      position: relative;
-      overflow: hidden;
-    }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-    /* SVG Gym Background */
-    body::before {
-      content: '';
-      background: url('https://www.svgrepo.com/show/500172/dumbbell.svg') no-repeat center center;
-      background-size: 40%;
-      opacity: 0.05;
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-    }
+html,body{
+  min-height:100vh;
+  font-family:'Montserrat',sans-serif;
+  background:var(--dark);
+  color:#fff;
+}
 
-    .container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-grow: 1;
-      padding: 20px;
-      position: relative;
-      z-index: 1;
-    }
+body{
+  display:flex;
+  flex-direction:column;
+}
 
-    .card {
-      background-color: rgba(0, 0, 0, 0.85);
-      padding: 40px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-      border-radius: 16px;
-      width: 100%;
-      max-width: 420px;
-      text-align: center;
-      animation: fadeIn 1s ease-in-out;
-      backdrop-filter: blur(8px);
-      position: relative;
-      font-family: 'Bebas Neue', 'Segoe UI', sans-serif;
-    }
+/* ================= LAYOUT ================= */
+.page-wrapper{
+  flex:1;
+  display:flex;
+  min-height:100vh;
+}
 
-    .card::before {
-      content: "\f44b";
-      font-family: "Font Awesome 6 Free";
-      font-weight: 900;
-      font-size: 42px;
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #000;
-      padding: 12px;
-      box-shadow: 0 0 0 4px #00c3ff;
-      color: #00c3ff;
-    }
+/* ================= IMAGE PANEL ================= */
+.image-panel{
+  flex:1;
+  background:
+    linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.9)),
+    url("https://images.unsplash.com/photo-1517836357463-d25dfeac3438") center/cover;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px;
+}
 
-    .card img {
-      width: 60px;
-      margin-bottom: 10px;
-      filter: invert(100%);
-    }
+.branding{
+  text-align:center;
+  max-width:420px;
+}
 
-    h2 {
-      font-size: 26px;
-      color: #00c3ff;
-      margin-bottom: 5px;
-      font-weight: 600;
-    }
+.branding h1{
+  font-size:36px;
+  font-weight:800;
+  color:var(--primary);
+}
 
-    .tagline {
-      font-size: 14px;
-      color: #ccc;
-      margin-bottom: 20px;
-      letter-spacing: 1px;
-    }
+.branding p{
+  margin-top:10px;
+  font-size:15px;
+  color:#ddd;
+  line-height:1.5;
+}
 
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 10px;
-      border: none;
-      font-size: 16px;
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-    }
+/* ================= FORM PANEL ================= */
+.form-panel{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px 20px;
+  background:var(--dark);
+}
 
-    input::placeholder {
-      color: #ccc;
-    }
+/* ================= CARD ================= */
+.card{
+  width:100%;
+  max-width:420px;
+  background:var(--card);
+  border-radius:26px;
+  padding:38px 34px;
+  box-shadow:0 40px 100px rgba(0,0,0,.9);
+  text-align:center;
+}
 
-    input:focus {
-      outline: none;
-      border: 2px solid #00c3ff;
-      background-color: rgba(255, 255, 255, 0.2);
-    }
+/* ================= ICON ================= */
+.card-icon{
+  width:70px;
+  height:70px;
+  margin:0 auto 20px;
+  border-radius:50%;
+  background:rgba(0,195,255,.15);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
-    button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      margin: 10px 0;
-      font-weight: bold;
-      transition: all 0.3s ease;
-    }
+.card-icon i{
+  font-size:32px;
+  color:var(--primary);
+}
 
-    #action-btn {
-      background: #00c3ff;
-      color: #000;
-    }
+/* ================= TITLE ================= */
+h2{
+  font-size:28px;
+  font-weight:800;
+  color:var(--primary);
+  margin-bottom:6px;
+}
 
-    #action-btn:hover {
-      background: #009dcf;
-      transform: scale(1.03);
-    }
+.tagline{
+  font-size:13px;
+  color:#bbb;
+  margin-bottom:26px;
+}
 
-    #google-btn {
-      background-color: #db4437;
-      color: white;
-    }
+/* ================= INPUTS ================= */
+.form-group{
+  text-align:left;
+  margin-bottom:18px;
+}
 
-    #google-btn:hover {
-      background-color: #c1351d;
-    }
+input{
+  width:100%;
+  height:48px;
+  padding:0 16px;
+  border-radius:12px;
+  border:1px solid #1f2642;
+  background:var(--input);
+  color:#fff;
+  font-size:14px;
+}
 
-    a {
-      color: #00c3ff;
-      text-decoration: none;
-      font-weight: 500;
-    }
+input::placeholder{
+  color:#888;
+}
 
-    a:hover {
-      text-decoration: underline;
-    }
+input:focus{
+  outline:none;
+  border-color:var(--primary);
+  box-shadow:0 0 0 2px rgba(0,195,255,.25);
+}
 
-    #toggle-form {
-      font-size: 14px;
-      margin-top: 10px;
-    }
+/* ================= BUTTON ================= */
+button{
+  width:100%;
+  height:50px;
+  border:none;
+  border-radius:30px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.3s;
+}
 
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
+#action-btn{
+  background:linear-gradient(135deg,#00c3ff,#4facfe);
+  color:#000;
+  margin-top:6px;
+}
 
-    footer {
-      background-color: #111;
-      color: #aaa;
-      text-align: center;
-      padding: 0.75rem 1rem;
-      font-size: 0.85rem;
-      position: sticky;
-      bottom: 0;
-      width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
-      z-index: 2;
-    }
+#action-btn:hover{
+  transform:scale(1.03);
+  box-shadow:0 0 25px rgba(0,195,255,.6);
+}
 
-    footer strong {
-      color: #00c3ff;
-    }
+/* ================= LINKS ================= */
+a{
+  color:var(--primary);
+  text-decoration:none;
+  font-weight:600;
+}
 
-    @media (max-width: 500px) {
-      .card {
-        width: 90%;
-        padding: 25px;
-      }
+a:hover{
+  text-decoration:underline;
+}
 
-      footer {
-        font-size: 0.75rem;
-      }
-    }
-  </style>
+#toggle-form{
+  font-size:14px;
+  margin-top:14px;
+}
+
+#msg{
+  margin-top:14px;
+  font-weight:600;
+  font-size:14px;
+}
+
+/* ================= FOOTER ================= */
+footer{
+  background:#02030a;
+  color:#aaa;
+  text-align:center;
+  padding:14px;
+  font-size:12px;
+}
+
+/* ================= MOBILE ================= */
+@media(max-width:900px){
+  .image-panel{
+    display:none;
+  }
+
+  .form-panel{
+    flex:1;
+  }
+}
+
+@media(max-width:480px){
+  .card{
+    padding:30px 22px;
+  }
+
+  h2{
+    font-size:24px;
+  }
+}
+</style>
 </head>
+
 <body>
-  <div class="container">
-    
-    <div class="card">
-      <!-- Logo -->
-      <!-- <img src="https://www.svgrepo.com/show/500172/dumbbell.svg" alt="Gym Logo" /> -->
 
-      <h2 id="form-title">Sign In</h2>
-      <!-- <p class="tagline">Train Hard. Stay Fit.</p> -->
+<div class="page-wrapper">
 
-      <input type="email" id="email" placeholder="Email" />
-      <input type="password" id="password" placeholder="Password" />
-
-      <button onclick="handleAuth()" id="action-btn">Sign In</button>
-      <!-- <button id="google-btn" onclick="googleSignIn()">Sign in with Google</button> -->
-
-      <p id="toggle-form">
-        Don't have an account? <a href="#" onclick="toggleForm()">Sign Up</a>
+  <!-- IMAGE / BRAND SIDE -->
+  <div class="image-panel">
+    <div class="branding">
+      <h1>Gym Connect</h1>
+      <p>
+        Smart gym management platform to manage members, payments,
+        renewals and growth — all in one place.
       </p>
-
-      <p><a href="#" onclick="forgotPassword()">Forgot Password?</a></p>
-
-      <p id="msg"></p>
     </div>
   </div>
 
-  <footer>
-    <p><b></b>© 2025 BlissTech7 Solutions</b> | Contact: blisstech7solutions@gmail.com</p>
-  </footer>
+  <!-- FORM SIDE -->
+  <div class="form-panel">
+    <div class="card">
 
-  <script type="module" src="script.js"></script>
+      <div class="card-icon">
+        <i class="fas fa-dumbbell"></i>
+      </div>
+
+      <h2 id="form-title">Sign In</h2>
+      <p class="tagline">Manage your gym professionally</p>
+
+      <div class="form-group">
+        <input type="email" id="email" placeholder="Email" />
+      </div>
+
+      <div class="form-group">
+        <input type="password" id="password" placeholder="Password" />
+      </div>
+
+      <button id="action-btn" onclick="handleAuth()">Sign In</button>
+
+      <p id="toggle-form">
+        Don't have an account?
+        <a href="#" onclick="toggleForm()">Sign Up</a>
+      </p>
+
+      <p style="margin-top:6px;">
+        <a href="#" onclick="forgotPassword()">Forgot Password?</a>
+      </p>
+
+      <p id="msg"></p>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  © 2025 <b>BlissTech7 Solutions</b> | blisstech7solutions@gmail.com
+</footer>
+
+<!-- ================= FUNCTIONALITY UNCHANGED ================= -->
+<script type="module" src="script.js"></script>
+
 </body>
 </html>

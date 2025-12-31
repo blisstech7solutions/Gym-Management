@@ -75,15 +75,15 @@ window.handleAuth = () => {
 
         if (email === "blisstech7solutions@gmail.com") {
           // Admin user
-          window.location.href = "/admin-dashboard.html";
+          window.location.href = "./admin-dashboard.html";
         } else {
           const docRef = doc(db, "gyms", user.uid);
           const docSnap = await getDoc(docRef);
 
           if (docSnap.exists()) {
-            window.location.href = "/gym-dashboard.html";
+            window.location.href = "./gym-dashboard.html";
           } else {
-            window.location.href = "/create-profile.html";
+            window.location.href = "./create-profile.html";
           }
         }
 
@@ -106,15 +106,15 @@ window.googleSignIn = () => {
       }
 
       if (user.email === "blisstech7solutions@gmail.com") {
-        window.location.href = "/admin-dashboard.html";
+        window.location.href = "./admin-dashboard.html";
       } else {
         const docRef = doc(db, "gyms", user.uid);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          window.location.href = "/gym-dashboard.html";
+          window.location.href = "./gym-dashboard.html";
         } else {
-          window.location.href = "/create-profile.html";
+          window.location.href = "./create-profile.html";
         }
       }
 

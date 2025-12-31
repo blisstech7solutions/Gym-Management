@@ -1,243 +1,418 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Edit Member</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Edit Member</title>
 
-    body {
-      font-family: Arial, sans-serif;
-      padding: 2rem;
-      background-color: #f4f4f4;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
 
-    form {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      max-width: 450px;
-      margin: auto;
-      flex-grow: 1;
-    }
+<style>
+:root{
+  --primary:#ff2e63;
+  --secondary:#08d9d6;
+  --bg:#05070d;
+  --card:#0f1424;
+  --input:#0b1020;
+}
 
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-    }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-    input, select {
-      width: 100%;
-      padding: 0.5rem;
-      margin-bottom: 1rem;
-    }
+html,body{
+  min-height:100vh;
+  font-family:'Montserrat',sans-serif;
+  background:var(--bg);
+  color:#fff;
+}
 
-    button {
-      padding: 0.7rem 1.5rem;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
+body{
+  display:flex;
+  flex-direction:column;
+}
 
-    #msg {
-      margin-top: 1rem;
-      font-weight: bold;
-    }
+/* ================= BACKGROUND ================= */
+.page-wrapper{
+  flex:1;
+  background:
+    linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.9)),
+    url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48") center/cover;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px 20px 100px;
+}
 
-    footer {
-      background-color: #343a40;
-      color: #ffffff;
-      text-align: center;
-      padding: 0.75rem 1rem;
-      font-size: 0.9rem;
-      position: sticky;
-      bottom: 0;
-      width: 100%;
-    }
+/* ================= CARD ================= */
+.form-card{
+  position:relative;   /* 👈 add this */
+  width:100%;
+  max-width:900px;
+  background:var(--card);
+  border-radius:26px;
+  padding:42px 40px;
+  box-shadow:0 40px 100px rgba(0,0,0,.9);
+}
 
-    footer p { margin: 0; }
-    footer strong { color: #00c3ff; }
 
-    @media (max-width: 500px) {
-      footer {
-        padding: 0.5rem;
-        font-size: 0.8rem;
-      }
-    }
-  </style>
+/* ================= TITLE ================= */
+.form-title{
+  text-align:center;
+  margin-bottom:32px;
+}
+
+.form-title h2{
+  font-size:32px;
+  font-weight:800;
+  color:var(--primary);
+}
+
+.form-title p{
+  font-size:14px;
+  color:#bbb;
+  margin-top:6px;
+}
+
+/* ================= GRID ================= */
+form{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:22px 24px;
+}
+
+.form-group{
+  display:flex;
+  flex-direction:column;
+}
+
+.form-group.full{
+  grid-column:1 / -1;
+}
+
+/* ================= LABEL ================= */
+label{
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:8px;
+  color:#ccc;
+}
+
+/* ================= INPUTS ================= */
+input,
+select{
+  height:48px;
+  padding:0 16px;
+  border-radius:12px;
+  border:1px solid #1f2642;
+  background:var(--input);
+  color:#fff;
+  font-size:14px;
+}
+
+input[readonly]{
+  opacity:0.7;
+}
+
+input:focus,
+select:focus{
+  outline:none;
+  border-color:var(--secondary);
+  box-shadow:0 0 0 2px rgba(8,217,214,.25);
+}
+
+/* ================= BUTTON ================= */
+button{
+  grid-column:1 / -1;
+  height:52px;
+  margin-top:10px;
+  border:none;
+  border-radius:32px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#000;
+  font-weight:800;
+  font-size:15px;
+  cursor:pointer;
+  transition:.3s;
+}
+/* ================= CLOSE BUTTON ================= */
+.close-btn{
+  position:absolute;
+  top:18px;
+  right:18px;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:.3s;
+  z-index:5;
+}
+
+.close-btn i{
+  color:#fff;
+  font-size:18px;
+}
+
+.close-btn:hover{
+  background:rgba(255,46,99,0.9);
+  transform:scale(1.05);
+}
+
+button:hover{
+  transform:scale(1.03);
+  box-shadow:0 0 30px rgba(255,46,99,.6);
+}
+
+/* ================= MESSAGE ================= */
+#msg{
+  grid-column:1 / -1;
+  margin-top:14px;
+  font-weight:700;
+  text-align:center;
+}
+
+/* ================= FOOTER ================= */
+footer{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:#02030a;
+  color:#aaa;
+  text-align:center;
+  padding:14px;
+  font-size:13px;
+}
+
+/* ================= MOBILE ================= */
+@media(max-width:768px){
+  .form-card{
+    padding:30px 22px;
+  }
+
+  form{
+    grid-template-columns:1fr;
+  }
+
+  button{
+    height:50px;
+  }
+}
+</style>
 </head>
+
 <body>
 
-  <form id="editForm">
-    <h2>Edit Member</h2>
+<div class="page-wrapper">
+  <div class="form-card">
+<a href="./gym-dashboard.html" class="close-btn" title="Back to Dashboard">x
+  <!-- <i class="fas fa-times"></i> -->
+</a>
 
-    <label for="name">Member Name</label>
-    <input type="text" id="name" required />
+    <div class="form-title">
+      <h2>Edit Member</h2>
+      <p>Update member and renewal details</p>
+    </div>
 
-    <label for="email">Email</label>
-    <input type="email" id="email" required />
+    <form id="editForm">
 
-    <label for="mobile">Mobile Number</label>
-    <input type="tel" id="mobile" required />
+      <div class="form-group">
+        <label>Member Name</label>
+        <input type="text" id="name" required />
+      </div>
 
-    <label for="joiningDate">Joining Date</label>
-    <input type="date" id="joiningDate" required readonly />
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="email" required />
+      </div>
 
-    <label for="duration">Original Duration (months)</label>
-    <select id="duration" required>
-      <option value="1">1 Month</option>
-      <option value="3">3 Months</option>
-      <option value="6">6 Months</option>
-      <option value="12">12 Months</option>
-    </select>
+      <div class="form-group">
+        <label>Mobile Number</label>
+        <input type="tel" id="mobile" required />
+      </div>
 
-    <label for="paymentAmount">Payment Amount (₹)</label>
-    <input type="number" id="paymentAmount" required />
+      <div class="form-group">
+        <label>Joining Date</label>
+        <input type="date" id="joiningDate" readonly required />
+      </div>
 
-    <label for="paymentStatus">Payment Status</label>
-    <select id="paymentStatus" required>
-      <option value="Paid">Paid</option>
-      <option value="Unpaid">Unpaid</option>
-    </select>
+      <div class="form-group">
+        <label>Original Duration (Months)</label>
+        <select id="duration" required>
+          <option value="1">1 Month</option>
+          <option value="3">3 Months</option>
+          <option value="6">6 Months</option>
+          <option value="12">12 Months</option>
+        </select>
+      </div>
 
-    <label for="renewalDate">Current Renewal Date</label>
-    <input type="date" id="renewalDate" required readonly />
+      <div class="form-group">
+        <label>Payment Amount (₹)</label>
+        <input type="number" id="paymentAmount" required />
+      </div>
 
-    <label for="renewDuration">Renew Duration (months)</label>
-    <select id="renewDuration">
-      <option value="">-- Select --</option>
-      <option value="1">1 Month</option>
-      <option value="3">3 Months</option>
-      <option value="6">6 Months</option>
-      <option value="12">12 Months</option>
-    </select>
+      <div class="form-group">
+        <label>Payment Status</label>
+        <select id="paymentStatus" required>
+          <option value="Paid">Paid</option>
+          <option value="Unpaid">Unpaid</option>
+        </select>
+      </div>
 
-    <label for="newRenewalDate">New Renewal Date</label>
-    <input type="date" id="newRenewalDate" readonly />
+      <div class="form-group">
+        <label>Current Renewal Date</label>
+        <input type="date" id="renewalDate" readonly required />
+      </div>
 
-    <label for="daysRemaining">Days Remaining</label>
-    <input type="text" id="daysRemaining" readonly />
+      <div class="form-group">
+        <label>Renew Duration (Months)</label>
+        <select id="renewDuration">
+          <option value="">-- Select --</option>
+          <option value="1">1 Month</option>
+          <option value="3">3 Months</option>
+          <option value="6">6 Months</option>
+          <option value="12">12 Months</option>
+        </select>
+      </div>
 
-    <button type="submit">Update Member</button>
-    <p id="msg"></p>
-  </form>
+      <div class="form-group">
+        <label>New Renewal Date</label>
+        <input type="date" id="newRenewalDate" readonly />
+      </div>
 
-  <footer>
-    <p><b>© 2025 BlissTech7 Solutions</b> | Contact: blisstech7solutions@gmail.com</p>
-  </footer>
+      <div class="form-group full">
+        <label>Days Remaining</label>
+        <input type="text" id="daysRemaining" readonly />
+      </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+      <button type="submit">Update Member</button>
+      <p id="msg"></p>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCY5-w3jLyC9iXN8Kh26wGIVia1zGuGwyk",
-      authDomain: "gym-management-50b12.firebaseapp.com",
-      projectId: "gym-management-50b12",
-      storageBucket: "gym-management-50b12.appspot.com",
-      messagingSenderId: "202067078338",
-      appId: "1:202067078338:web:6ad435b248f3230d7cdf5b"
-    };
+    </form>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+  </div>
+</div>
 
-    const form = document.getElementById("editForm");
-    const msg = document.getElementById("msg");
-    const params = new URLSearchParams(window.location.search);
-    const memberId = params.get("id");
+<footer>
+  © 2025 <b>BlissTech7 Solutions</b> | blisstech7solutions@gmail.com
+</footer>
 
-    const renewalDateInput = document.getElementById("renewalDate");
-    const newRenewalDateInput = document.getElementById("newRenewalDate");
-    const daysRemainingInput = document.getElementById("daysRemaining");
-    const renewDurationSelect = document.getElementById("renewDuration");
+<!-- ================= ORIGINAL FUNCTIONALITY (UNCHANGED) ================= -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
 
-    function calculateRenewal() {
-      const currentRenew = new Date(renewalDateInput.value);
-      const renewMonths = parseInt(renewDurationSelect.value);
+const firebaseConfig = {
+  apiKey: "AIzaSyCY5-w3jLyC9iXN8Kh26wGIVia1zGuGwyk",
+  authDomain: "gym-management-50b12.firebaseapp.com",
+  projectId: "gym-management-50b12",
+  storageBucket: "gym-management-50b12.appspot.com",
+  messagingSenderId: "202067078338",
+  appId: "1:202067078338:web:6ad435b248f3230d7cdf5b"
+};
 
-      if (!isNaN(renewMonths)) {
-        const newRenew = new Date(currentRenew);
-        newRenew.setMonth(newRenew.getMonth() + renewMonths);
-        newRenewalDateInput.value = newRenew.toISOString().split("T")[0];
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-        const diff = Math.floor((newRenew - new Date()) / (1000 * 3600 * 24));
-        daysRemainingInput.value = diff >= 0 ? `${diff} days` : `Expired ${Math.abs(diff)} days ago`;
-      }
-    }
+const form = document.getElementById("editForm");
+const msg = document.getElementById("msg");
+const params = new URLSearchParams(window.location.search);
+const memberId = params.get("id");
 
-    renewDurationSelect.addEventListener("change", calculateRenewal);
+const renewalDateInput = document.getElementById("renewalDate");
+const newRenewalDateInput = document.getElementById("newRenewalDate");
+const daysRemainingInput = document.getElementById("daysRemaining");
+const renewDurationSelect = document.getElementById("renewDuration");
 
-    onAuthStateChanged(auth, async (user) => {
-      if (!user || !memberId) {
-        window.location.href = "/index.html";
-        return;
-      }
+function calculateRenewal(){
+  const currentRenew = new Date(renewalDateInput.value);
+  const renewMonths = parseInt(renewDurationSelect.value);
 
-      const memberRef = doc(db, "gyms", user.uid, "members", memberId);
-      const memberSnap = await getDoc(memberRef);
+  if(!isNaN(renewMonths)){
+    const newRenew = new Date(currentRenew);
+    newRenew.setMonth(newRenew.getMonth() + renewMonths);
+    newRenewalDateInput.value = newRenew.toISOString().split("T")[0];
 
-      if (!memberSnap.exists()) {
-        msg.textContent = "Member not found.";
-        return;
-      }
+    const diff = Math.floor((newRenew - new Date()) / (1000 * 3600 * 24));
+    daysRemainingInput.value = diff >= 0 ? `${diff} days` : `Expired ${Math.abs(diff)} days ago`;
+  }
+}
 
-      const data = memberSnap.data();
+renewDurationSelect.addEventListener("change", calculateRenewal);
 
-      document.getElementById("name").value = data.name || "";
-      document.getElementById("email").value = data.email || "";
-      document.getElementById("mobile").value = data.mobile || "";
-      document.getElementById("joiningDate").value = data.joiningDate || "";
-      document.getElementById("duration").value = data.duration || "";
-      document.getElementById("paymentAmount").value = data.paymentAmount || "";
-      document.getElementById("paymentStatus").value = data.paymentStatus || "";
-      renewalDateInput.value = data.renewalDate || "";
+onAuthStateChanged(auth, async user=>{
+  if(!user || !memberId){
+    window.location.href="/index.html";
+    return;
+  }
 
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+  const memberRef = doc(db,"gyms",user.uid,"members",memberId);
+  const snap = await getDoc(memberRef);
 
-        const name = document.getElementById("name").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const mobile = document.getElementById("mobile").value.trim();
-        const joiningDate = document.getElementById("joiningDate").value;
-        const duration = document.getElementById("duration").value;
-        const paymentAmount = document.getElementById("paymentAmount").value.trim();
-        const paymentStatus = document.getElementById("paymentStatus").value;
-        const newRenewalDate = newRenewalDateInput.value;
+  if(!snap.exists()){
+    msg.textContent="Member not found.";
+    return;
+  }
 
-        const daysTotal = Math.floor((new Date(newRenewalDate) - new Date(joiningDate)) / (1000 * 3600 * 24));
+  const data = snap.data();
 
-        try {
-          await updateDoc(memberRef, {
-            name,
-            email,
-            mobile,
-            joiningDate,
-            duration,
-            paymentAmount,
-            paymentStatus,
-            renewalDate: newRenewalDate,
-            daysTotal
-          });
+  document.getElementById("name").value = data.name || "";
+  document.getElementById("email").value = data.email || "";
+  document.getElementById("mobile").value = data.mobile || "";
+  document.getElementById("joiningDate").value = data.joiningDate || "";
+  document.getElementById("duration").value = data.duration || "";
+  document.getElementById("paymentAmount").value = data.paymentAmount || "";
+  document.getElementById("paymentStatus").value = data.paymentStatus || "";
+  renewalDateInput.value = data.renewalDate || "";
 
-          msg.style.color = "green";
-          msg.textContent = "Membership renewed & updated ✅";
-          setTimeout(() => window.location.href = "/gym-dashboard.html", 1500);
-        } catch (error) {
-          msg.style.color = "red";
-          msg.textContent = "Error: " + error.message;
-        }
+  form.addEventListener("submit", async e=>{
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const mobile = document.getElementById("mobile").value.trim();
+    const joiningDate = document.getElementById("joiningDate").value;
+    const duration = document.getElementById("duration").value;
+    const paymentAmount = document.getElementById("paymentAmount").value.trim();
+    const paymentStatus = document.getElementById("paymentStatus").value;
+    const newRenewalDate = newRenewalDateInput.value;
+
+    const daysTotal = Math.floor(
+      (new Date(newRenewalDate) - new Date(joiningDate)) / (1000 * 3600 * 24)
+    );
+
+    try{
+      await updateDoc(memberRef,{
+        name,
+        email,
+        mobile,
+        joiningDate,
+        duration,
+        paymentAmount,
+        paymentStatus,
+        renewalDate:newRenewalDate,
+        daysTotal
       });
-    });
-  </script>
+
+      msg.style.color="lime";
+      msg.textContent="Membership renewed & updated ✅";
+      setTimeout(()=>window.location.href="./gym-dashboard.html",1500);
+    }catch(err){
+      msg.style.color="red";
+      msg.textContent="Error: "+err.message;
+    }
+  });
+});
+</script>
+
 </body>
 </html>
