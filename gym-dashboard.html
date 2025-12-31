@@ -117,6 +117,16 @@ body,html{
 }
 .whatsapp-button:hover{background:#1ebe5d;}
 .whatsapp-icon{width:20px;height:20px;}
+/* Mobile WhatsApp button fix */
+.member-card .whatsapp-button{
+  padding:8px 14px;
+}
+
+.member-card .whatsapp-icon{
+  width:22px;
+  height:22px;
+}
+
 
 /* ================= MEMBER CARD (MOBILE) ================= */
 .member-card{
@@ -281,19 +291,27 @@ const renderMembers=(members)=>{
       </td>
     </tr>`;
 
-    cards.innerHTML+=`
-    <div class="col mb-4">
-      <div class="member-card ${cls}">
-        <h5>${m.name}</h5>
-        <p>Email: ${m.email}</p>
-        <p>Mobile: ${m.mobile}</p>
-        <p>Renewal: ${displayText}</p>
-        <div class="d-flex gap-2">
-          <button class="btn btn-warning btn-sm" onclick="location.href='edit-member.html?id=${m.id}'">Edit</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteMember('${m.id}')">Delete</button>
-        </div>
-      </div>
-    </div>`;
+cards.innerHTML+=`
+<div class="col mb-4">
+  <div class="member-card ${cls}">
+    <h5>${m.name}</h5>
+    <p>Email: ${m.email}</p>
+    <p>Mobile: ${m.mobile}</p>
+    <p>Renewal: ${displayText}</p>
+
+    <div class="d-flex gap-2 flex-wrap mt-2">
+      <button class="btn btn-warning btn-sm" onclick="location.href='edit-member.html?id=${m.id}'">Edit</button>
+      <button class="btn btn-danger btn-sm" onclick="deleteMember('${m.id}')">Delete</button>
+
+      <button class="whatsapp-button"
+        onclick="sendWhatsApp('${m.mobile}','${m.name}','${renewalDaysRemaining}')">
+        <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png"
+             class="whatsapp-icon">
+      </button>
+    </div>
+  </div>
+</div>`;
+
   });
 };
 
