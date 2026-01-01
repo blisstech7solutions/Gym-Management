@@ -8,6 +8,9 @@
 <!-- Bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
 
+<!-- Font Awesome (icons only) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
 <!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
@@ -34,28 +37,19 @@ body,html{
 .days-warning{background:#ff9800!important;color:#000;font-weight:700;}
 .days-critical{background:#dc3545!important;color:#fff;font-weight:700;}
 
-/* ================= HEADER WITH IMAGE ================= */
+/* ================= HEADER ================= */
 .dashboard-header{
-  position:relative;
   background:
     linear-gradient(to bottom,rgba(0,0,0,.55),rgba(0,0,0,.9)),
     url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48") center/cover;
   border-radius:24px;
   padding:60px 25px;
   margin:20px;
-  box-shadow:0 25px 60px rgba(0,0,0,.7);
 }
 
 .dashboard-header h2{
   font-weight:800;
   color:var(--primary);
-  font-size:clamp(26px,5vw,38px);
-}
-
-.dashboard-header p{
-  font-size:14px;
-  color:#ddd;
-  margin-top:5px;
 }
 
 /* ================= CONTAINER ================= */
@@ -75,23 +69,11 @@ body,html{
   margin-bottom:30px;
 }
 
-.btn-custom{
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
-  color:#000;
-  border:none;
-  border-radius:30px;
-  padding:10px 26px;
-  font-weight:700;
-  transition:.3s;
-}
-.btn-custom:hover{transform:scale(1.05);}
-
 /* ================= TABLE ================= */
 .table{
   background:var(--glass);
   backdrop-filter:blur(14px);
   border-radius:18px;
-  overflow:hidden;
   color:#fff;
 }
 
@@ -115,16 +97,7 @@ body,html{
   display:inline-flex;
   align-items:center;
 }
-.whatsapp-button:hover{background:#1ebe5d;}
 .whatsapp-icon{width:20px;height:20px;}
-
-.member-card .whatsapp-button{
-  padding:8px 14px;
-}
-.member-card .whatsapp-icon{
-  width:22px;
-  height:22px;
-}
 
 /* ================= MEMBER CARD (MOBILE) ================= */
 .member-card{
@@ -134,24 +107,39 @@ body,html{
   border-radius:22px;
   padding:20px;
   box-shadow:0 20px 40px rgba(0,0,0,.6);
-  transition:.4s;
-  height:100%;
-}
-
-.member-card:hover{
-  transform:translateY(-6px);
-  box-shadow:0 25px 60px rgba(255,46,99,.4);
 }
 
 .member-card h5{
   color:var(--secondary);
   font-weight:700;
 }
-
 .member-card p{
   font-size:13px;
   color:#ddd;
 }
+
+/* ===== MOBILE ICON ACTIONS (ADDED) ===== */
+.mobile-actions{
+  display:flex;
+  gap:12px;
+  margin-top:14px;
+}
+
+.mobile-actions button{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  border:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;
+  color:#fff;
+}
+
+.mobile-edit{background:#ffc107;color:#000;}
+.mobile-delete{background:#dc3545;}
+.mobile-whatsapp{background:#25D366;}
 
 /* ================= FOOTER ================= */
 .footer{
@@ -163,7 +151,7 @@ body,html{
   color:#aaa;
 }
 
-/* ================= RESPONSIVE SWITCH ================= */
+/* ================= RESPONSIVE ================= */
 @media (min-width:768px){
   #memberTable-container{display:block;}
   #memberCards{display:none;}
@@ -172,6 +160,29 @@ body,html{
   #memberTable-container{display:none;}
   #memberCards{display:block;}
 }
+/* ===== UNIFORM ACTION ICON BUTTONS ===== */
+.btn.btn-sm,
+.whatsapp-button{
+  width:38px;
+  height:38px;
+  padding:0;
+  border-radius:50%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Font Awesome icons */
+.btn.btn-sm i{
+  font-size:14px;
+}
+
+/* WhatsApp image icon */
+.whatsapp-icon{
+  width:18px;
+  height:18px;
+}
+
 </style>
 </head>
 
@@ -182,16 +193,38 @@ body,html{
   <p id="gym-details"></p>
 </div>
 
+
 <div class="container-custom">
 
-  <div class="action-bar">
-    <h4 class="m-0">My Gym Members</h4>
-    <div class="d-flex gap-2">
-      <button class="btn btn-outline-danger" id="logoutBtn">Logout</button>
-      <button class="btn btn-custom" id="addMemberBtn">Add Member</button>
-    </div>
-  </div>
+<div class="action-bar">
+  <h4 class="m-0">My Gym Members</h4>
 
+  <div class="d-flex gap-2 align-items-center flex-wrap">
+    <!-- PAGE SWITCH BUTTONS -->
+    <!-- <button class="btn btn-primary"
+      onclick="location.href='gym-dashboard.html'">
+      <i class="fas fa-users"></i> Members
+    </button> -->
+
+    <button class="btn btn-outline-primary"
+      onclick="location.href='dashboard-analytics.html'">
+      <i class="fas fa-chart-line"></i> Analytics
+    </button>
+
+  
+
+    <button class="btn btn-warning" id="addMemberBtn">
+      Add Member
+    </button>
+ <button class="btn btn-outline-danger" id="logoutBtn">
+  <i class="fas fa-sign-out-alt"></i> 
+</button>
+
+  </div>
+</div>
+
+
+  <!-- DESKTOP TABLE -->
   <div id="memberTable-container">
     <table class="table table-bordered table-hover">
       <thead>
@@ -213,6 +246,7 @@ body,html{
     </table>
   </div>
 
+  <!-- MOBILE CARDS -->
   <div id="memberCards" class="row row-cols-1 row-cols-md-2 row-cols-lg-3"></div>
 
 </div>
@@ -242,24 +276,18 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 let currentUserId;
 
-/* ===== SAME LOGIC (UNCHANGED) ===== */
 const calculateDaysRemaining = (renewalDate) => {
   const today = new Date();
   const rd = new Date(renewalDate);
-
   today.setHours(0,0,0,0);
   rd.setHours(0,0,0,0);
-
-  const diff = Math.floor((rd - today) / (1000 * 60 * 60 * 24));
-
+  const diff = Math.floor((rd - today) / (1000*60*60*24));
   return {
     renewalDaysRemaining: diff,
     displayText:
-      diff < 0
-        ? `Expired ${Math.abs(diff)} days ago`
-        : diff === 0
-        ? `Expires today`
-        : `${diff} days`
+      diff < 0 ? `Expired ${Math.abs(diff)} days ago`
+      : diff === 0 ? `Expires today`
+      : `${diff} days`
   };
 };
 
@@ -269,21 +297,12 @@ const renderMembers = (members) => {
   tbody.innerHTML = "";
   cards.innerHTML = "";
 
-  members.forEach(m => {
-
-    /* ✅ ONLY CORRECT USAGE FIX HERE */
+  members.forEach(m=>{
     const { renewalDaysRemaining, displayText } =
       calculateDaysRemaining(m.renewalDate);
 
-    let cls =
-      renewalDaysRemaining < 2
-        ? 'days-critical'
-        : renewalDaysRemaining < 5
-        ? 'days-warning'
-        : '';
-
     tbody.innerHTML += `
-      <tr class="${renewalDaysRemaining < 5 ? 'highlight' : ''}">
+      <tr>
         <td>${m.name}</td>
         <td>${m.email}</td>
         <td>${m.mobile}</td>
@@ -293,64 +312,64 @@ const renderMembers = (members) => {
         <td>${m.daysTotal} days</td>
         <td>₹${m.paymentAmount}</td>
         <td>${m.paymentStatus}</td>
-        <td class="${cls}">${displayText}</td>
+        <td>${displayText}</td>
         <td>
-          <div class="d-flex gap-2">
-            <button class="btn btn-sm btn-warning" onclick="location.href='edit-member.html?id=${m.id}'">Edit</button>
-            <button class="btn btn-sm btn-danger" onclick="deleteMember('${m.id}')">Delete</button>
-            <button class="whatsapp-button" onclick="sendWhatsApp('${m.mobile}','${m.name}','${renewalDaysRemaining}')">
-              <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" class="whatsapp-icon">
-            </button>
-          </div>
+        <button class="btn btn-sm btn-warning"
+  onclick="location.href='edit-member.html?id=${m.id}'">
+  <i class="fas fa-pen"></i>
+</button>
+
+<button class="btn btn-sm btn-danger"
+  onclick="deleteMember('${m.id}')">
+  <i class="fas fa-trash"></i>
+</button>
+
+<button class="whatsapp-button"
+  onclick="sendWhatsApp('${m.mobile}','${m.name}','${renewalDaysRemaining}')">
+  <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png"
+       class="whatsapp-icon">
+</button>
+
         </td>
       </tr>`;
 
     cards.innerHTML += `
       <div class="col mb-4">
-        <div class="member-card ${cls}">
+        <div class="member-card">
           <h5>${m.name}</h5>
           <p>Email: ${m.email}</p>
           <p>Mobile: ${m.mobile}</p>
           <p>Renewal: ${displayText}</p>
+
+          <div class="mobile-actions">
+            <button class="mobile-edit"
+              onclick="location.href='edit-member.html?id=${m.id}'">
+              <i class="fas fa-pen"></i>
+            </button>
+            <button class="mobile-delete"
+              onclick="deleteMember('${m.id}')">
+              <i class="fas fa-trash"></i>
+            </button>
+            <button class="mobile-whatsapp"
+              onclick="sendWhatsApp('${m.mobile}','${m.name}','${renewalDaysRemaining}')">
+              <i class="fab fa-whatsapp"></i>
+            </button>
+          </div>
         </div>
       </div>`;
   });
 };
 
-window.sendWhatsApp = (mob, name, days) => {
-  window.open(
-    `https://wa.me/${mob}?text=${encodeURIComponent(
-      `Hello ${name}, your membership expires in ${days} days.`
-    )}`
-  );
+window.sendWhatsApp = (mob,name,days)=>{
+  window.open(`https://wa.me/${mob}?text=Hello ${name}, expires in ${days} days`);
 };
 
-window.deleteMember = async (id) => {
+window.deleteMember = async (id)=>{
   if(confirm("Delete member?")){
     await deleteDoc(doc(db,"gyms",currentUserId,"members",id));
     loadMembers();
   }
 };
-
-const loadMembers = async () => {
-  const snap = await getDocs(collection(db,"gyms",currentUserId,"members"));
-  const arr = [];
-  snap.forEach(d => {
-    let x = d.data();
-    x.id = d.id;
-    arr.push(x);
-  });
-
-  /* ===== SORTING (UNCHANGED) ===== */
-  arr.sort((a, b) => {
-    const da = calculateDaysRemaining(a.renewalDate).renewalDaysRemaining;
-    const db = calculateDaysRemaining(b.renewalDate).renewalDaysRemaining;
-    return da - db;
-  });
-
-  renderMembers(arr);
-};
-
 const loadGymDetails = async () => {
   const gymDoc = await getDoc(doc(db,"gyms",currentUserId));
   if(gymDoc.exists()){
@@ -360,18 +379,36 @@ const loadGymDetails = async () => {
   }
 };
 
+const loadMembers = async ()=>{
+  const snap = await getDocs(collection(db,"gyms",currentUserId,"members"));
+  const arr=[];
+  snap.forEach(d=>{
+    let x=d.data();
+    x.id=d.id;
+    arr.push(x);
+  });
+  arr.sort((a, b) => {
+  const da = calculateDaysRemaining(a.renewalDate).renewalDaysRemaining;
+  const db = calculateDaysRemaining(b.renewalDate).renewalDaysRemaining;
+  return da - db;
+});
+
+  renderMembers(arr);
+};
+
 onAuthStateChanged(auth, user => {
   if(user){
     currentUserId = user.uid;
-    loadGymDetails();
-    loadMembers();
+    loadGymDetails();   // ✅ MUST BE HERE
+    loadMembers();      // ✅ sorting + rendering
   } else {
     location.href = "index.html";
   }
 });
 
-$("#logoutBtn").click(() => signOut(auth));
-$("#addMemberBtn").click(() => location.href="add-member.html");
+
+$("#logoutBtn").click(()=>signOut(auth));
+$("#addMemberBtn").click(()=>location.href="add-member.html");
 </script>
 
 </body>
